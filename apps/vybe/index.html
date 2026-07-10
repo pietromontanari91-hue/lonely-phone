@@ -348,48 +348,13 @@ const people = [
 ];
 
 const posts = [
-  {
-    user:"martina.ss",
-    place:"Positano, Italia",
-    image:"assets/images/01_positano.webp",
-    caption:"Giorni che sanno d'estate ☀️",
-    likes:845
-  },
-  {
-    user:"giuliabln",
-    place:"Mykonos, Grecia",
-    image:"assets/images/02_couple_trip.webp",
-    caption:"you, me & sunsets 🤍",
-    likes:1287
-  },
-  {
-    user:"vale.sc",
-    place:"Roma, Italia",
-    image:"assets/images/03_girls_dinner.webp",
-    caption:"Le mie persone preferite ✨",
-    likes:963
-  },
-  {
-    user:"sofiatravels",
-    place:"Firenze, Italia",
-    image:"assets/images/04_rooftop_aperitivo.webp",
-    caption:"Golden hour aperitivo 🥂",
-    likes:714
-  },
-  {
-    user:"chiara.dee",
-    place:"Milano Malpensa",
-    image:"assets/images/06_airport.webp",
-    caption:"Next destination ✈️",
-    likes:1104
-  },
-  {
-    user:"aleeteo",
-    place:"Costa Amalfitana",
-    image:"assets/images/10_roadtrip.webp",
-    caption:"No plans, just roads 🚗",
-    likes:688
-  }
+  {user:"martina.ss",place:"Positano, Italia",image:"assets/images/01_positano.webp",caption:"Giorni che sanno d'estate ☀️",likes:845},
+  {user:"giuliabln",place:"Mykonos, Grecia",image:"assets/images/02_couple_trip.webp",caption:"you, me & sunsets 🤍",likes:1287},
+  {user:"saraferrari",place:"Neon Room, Milano",video:"assets/videos/concerto per vybe.mp4",poster:"assets/images/03_girls_dinner.webp",caption:"last night was a blur ✨",likes:1482},
+  {user:"vale.sc",place:"Roma, Italia",image:"assets/images/03_girls_dinner.webp",caption:"Le mie persone preferite ✨",likes:963},
+  {user:"sofiatravels",place:"Firenze, Italia",image:"assets/images/04_rooftop_aperitivo.webp",caption:"Golden hour aperitivo 🥂",likes:714},
+  {user:"chiara.dee",place:"Milano Malpensa",image:"assets/images/06_airport.webp",caption:"Next destination ✈️",likes:1104},
+  {user:"aleeteo",place:"Costa Amalfitana",image:"assets/images/10_roadtrip.webp",caption:"No plans, just roads 🚗",likes:688}
 ];
 
 const storiesEl = document.getElementById("stories");
@@ -426,7 +391,11 @@ function renderFeed(){
       </div>
 
       <div class="media">
-        <img src="${post.image}" alt="">
+        ${post.video
+          ? `<video muted loop playsinline autoplay preload="metadata" poster="${post.poster}">
+              <source src="${post.video}" type="video/mp4">
+            </video>`
+          : `<img src="${post.image}" alt="">`}
         <div class="location">${post.place}</div>
         <div class="heart-burst">♥</div>
       </div>
@@ -515,6 +484,15 @@ document.addEventListener("pointerup",event => {
 
 renderStories();
 renderFeed();
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+   const v=e.target;
+   if(e.isIntersecting){v.play().catch(()=>{});}else{v.pause();}
+ });
+},{threshold:.6});
+document.querySelectorAll("video").forEach(v=>observer.observe(v));
+
 </script>
 </body>
 </html>
