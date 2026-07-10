@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#5c2ca8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pulse">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Pulse</title>
+
+<style>
+:root{
+  --violet:#8e58ff;
+  --pink:#ff4bb2;
+  --ink:#fff;
+  --line:rgba(255,255,255,.24);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(circle at 18% 0,#9d5cff 0,transparent 30%),
+    radial-gradient(circle at 92% 15%,#ff4bb2 0,transparent 34%),
+    linear-gradient(180deg,#4e247f,#1f102f);
+  overflow:hidden;
+}
+button{font:inherit;color:inherit}
+.app{
+  min-height:100svh;
+  max-width:520px;
+  margin:auto;
+  padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 18px);
+  display:flex;
+  flex-direction:column;
+}
+.glass{
+  background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.07));
+  border:1px solid var(--line);
+  box-shadow:0 20px 50px rgba(20,5,35,.28),inset 0 1px 0 rgba(255,255,255,.3);
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+}
+.top{
+  height:66px;
+  border-radius:25px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+}
+.brand{
+  font-size:27px;
+  font-weight:300;
+  letter-spacing:3px;
+}
+.iconbtn{
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:15px;
+  background:rgba(255,255,255,.14);
+  font-size:20px;
+}
+.content{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.card{
+  width:100%;
+  border-radius:30px;
+  padding:24px;
+  text-align:center;
+}
+.bluetooth{
+  width:104px;
+  height:104px;
+  margin:0 auto 18px;
+  border-radius:34px;
+  display:grid;
+  place-items:center;
+  font-size:44px;
+  background:linear-gradient(145deg,#8e58ff,#ff4bb2);
+  box-shadow:0 20px 45px rgba(103,52,190,.35);
+  transition:.35s transform,.35s box-shadow;
+}
+.bluetooth.connecting{
+  animation:pulse 1s ease-in-out infinite;
+}
+.bluetooth.connected{
+  transform:scale(1.05);
+  box-shadow:0 0 0 10px rgba(255,255,255,.08),0 20px 45px rgba(103,52,190,.4);
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+.card h1{
+  margin:0;
+  font-size:26px;
+}
+.card p{
+  margin:8px 0 22px;
+  opacity:.72;
+  font-size:14px;
+}
+.device{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:14px;
+  border-radius:20px;
+  background:rgba(255,255,255,.10);
+  text-align:left;
+}
+.device-icon{
+  width:48px;
+  height:48px;
+  border-radius:17px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.16);
+  font-size:22px;
+}
+.device-info{
+  flex:1;
+}
+.device-info b{
+  display:block;
+  font-size:14px;
+}
+.device-info small{
+  font-size:11px;
+  opacity:.68;
+}
+.connect{
+  width:100%;
+  margin-top:18px;
+  border:0;
+  border-radius:17px;
+  padding:14px;
+  background:linear-gradient(145deg,#8e58ff,#ff4bb2);
+  font-weight:700;
+}
+.connect:disabled{
+  opacity:.7;
+}
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:calc(env(safe-area-inset-bottom) + 28px);
+  transform:translate(-50%,20px);
+  opacity:0;
+  padding:11px 16px;
+  border-radius:99px;
+  background:rgba(20,7,30,.78);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(16px);
+  font-size:13px;
+  transition:.25s;
+}
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:14px;
+  font-size:12px;
+  opacity:.75;
+}
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#ffcf5d;
+}
+.status.connected .dot{
+  background:#4ce181;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="top glass">
+    <div class="brand">Pulse</div>
+    <button class="iconbtn">⋯</button>
+  </header>
+
+  <main class="content">
+    <section class="card glass">
+      <div class="bluetooth" id="bluetooth">ᛒ</div>
+      <h1>Bluetooth</h1>
+      <p>Connetti il telefono agli speaker</p>
+
+      <div class="device">
+        <div class="device-icon">◉</div>
+        <div class="device-info">
+          <b>Living Room Speakers</b>
+          <small id="deviceStatus">Disponibile</small>
+        </div>
+      </div>
+
+      <button class="connect" id="connectBtn">Connetti</button>
+
+      <div class="status" id="status">
+        <span class="dot"></span>
+        <span id="statusText">Non connesso</span>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast">Connessione riuscita</div>
+
+<script>
+const btn=document.getElementById("connectBtn");
+const bluetooth=document.getElementById("bluetooth");
+const status=document.getElementById("status");
+const statusText=document.getElementById("statusText");
+const deviceStatus=document.getElementById("deviceStatus");
+const toast=document.getElementById("toast");
+
+let connected=false;
+
+btn.addEventListener("click",()=>{
+  if(connected){
+    connected=false;
+    bluetooth.classList.remove("connected");
+    status.classList.remove("connected");
+    btn.textContent="Connetti";
+    statusText.textContent="Non connesso";
+    deviceStatus.textContent="Disponibile";
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent="Connessione…";
+  bluetooth.classList.add("connecting");
+  statusText.textContent="Connessione in corso";
+  deviceStatus.textContent="Connessione…";
+
+  setTimeout(()=>{
+    connected=true;
+    btn.disabled=false;
+    btn.textContent="Disconnetti";
+    bluetooth.classList.remove("connecting");
+    bluetooth.classList.add("connected");
+    status.classList.add("connected");
+    statusText.textContent="Connesso";
+    deviceStatus.textContent="Connesso";
+    toast.classList.add("show");
+
+    setTimeout(()=>toast.classList.remove("show"),1800);
+  },1600);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "Pulse",
+  "short_name": "Pulse",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1f102f",
+  "theme_color": "#5c2ca8"
+}
