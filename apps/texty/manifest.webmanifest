@@ -1,0 +1,10 @@
+{
+  "name": "Texty",
+  "short_name": "Texty",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#52063b",
+  "theme_color": "#c20a79"
+}
