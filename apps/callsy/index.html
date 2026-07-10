@@ -41,6 +41,98 @@ button,input,select{font:inherit;color:inherit}
 .director-trigger{
   display:none !important;
 }
+
+.lock{
+  overflow:hidden;
+}
+.ambient{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(42px);
+  opacity:.34;
+  pointer-events:none;
+}
+.ambient-one{
+  width:260px;
+  height:260px;
+  top:18%;
+  left:-70px;
+  background:rgba(255,46,165,.38);
+  animation:ambientMoveOne 7s ease-in-out infinite alternate;
+}
+.ambient-two{
+  width:320px;
+  height:320px;
+  right:-110px;
+  bottom:8%;
+  background:rgba(122,80,255,.32);
+  animation:ambientMoveTwo 8s ease-in-out infinite alternate;
+}
+@keyframes ambientMoveOne{
+  to{transform:translate(70px,45px) scale(1.12)}
+}
+@keyframes ambientMoveTwo{
+  to{transform:translate(-60px,-40px) scale(.92)}
+}
+.rings{
+  position:absolute;
+  top:34%;
+  left:50%;
+  width:108px;
+  height:108px;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:2;
+}
+.rings i{
+  position:absolute;
+  inset:0;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:38px;
+  animation:ringPulse 2.4s ease-out infinite;
+}
+.rings i:nth-child(2){animation-delay:.8s}
+.rings i:nth-child(3){animation-delay:1.6s}
+@keyframes ringPulse{
+  0%{transform:scale(.8);opacity:.65}
+  100%{transform:scale(2.4);opacity:0}
+}
+#incoming .caller{
+  animation:callerFloat 3.2s ease-in-out infinite;
+}
+@keyframes callerFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
+}
+#incoming .avatar{
+  animation:avatarGlow 2.1s ease-in-out infinite;
+}
+@keyframes avatarGlow{
+  0%,100%{box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 0 0 rgba(255,255,255,.08)}
+  50%{box-shadow:0 22px 58px rgba(0,0,0,.42),0 0 0 10px rgba(255,255,255,.05)}
+}
+#incoming .accept{
+  animation:acceptPulse 1.5s ease-in-out infinite;
+}
+#incoming .decline{
+  animation:declinePulse 1.8s ease-in-out infinite;
+}
+@keyframes acceptPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.07)}
+}
+@keyframes declinePulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.04)}
+}
+#incoming.active{
+  animation:screenFade .35s ease;
+}
+@keyframes screenFade{
+  from{opacity:0}
+  to{opacity:1}
+}
+
 </style>
 </head>
 <body>
@@ -48,6 +140,9 @@ button,input,select{font:inherit;color:inherit}
 <section id="standby" class="screen active"></section>
 
 <section id="incoming" class="screen lock">
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="rings"><i></i><i></i><i></i></div>
   <div class="status"><span id="statusTime">09:41</span><span>●●● ᯤ ▰</span></div>
   <div class="time"><div class="clock" id="lockClock">09:41</div><div class="date" id="lockDate"></div></div>
   <div class="caller"><div class="avatar" id="incomingAvatar">M</div><h1 id="incomingName">Martina</h1><p>chiamata in arrivo</p></div>
