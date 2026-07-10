@@ -9,6 +9,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Almost Phone">
 <title>Almost Phone</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 <style>
 :root{--pink:#ff2aa3;--violet:#8e58ff;--line:rgba(255,255,255,.28)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -29,7 +32,12 @@ button,input,select{font:inherit;color:inherit}
 .statusbar{display:flex;justify-content:space-between;padding:0 3px 18px;font-size:15px;font-weight:700}.header h1{margin:0;font-size:36px;letter-spacing:-1.4px}.header p{margin:8px 0 0;font-size:14px;opacity:.72}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px 12px;margin-top:38px}.app-link{text-decoration:none;color:#fff;text-align:center;font-size:13px}
 .icon{width:76px;height:76px;margin:0 auto 9px;border-radius:23px;display:grid;place-items:center;font-size:31px;font-weight:700;border:1px solid var(--line);box-shadow:0 18px 40px rgba(35,0,25,.28),inset 0 1px 0 rgba(255,255,255,.32)}
-.icon.vybe{background:linear-gradient(145deg,#ff44ae,#8657ff)}.icon.texty{background:linear-gradient(145deg,#ff6ac0,#d23eb4)}.icon.callsy{background:linear-gradient(145deg,#35d879,#129a55)}.icon.pulse{background:linear-gradient(145deg,#8f66ff,#4d35d4)}.icon.travels{background:linear-gradient(145deg,#5fcfff,#5b7dff)}.icon.disabled{background:linear-gradient(145deg,rgba(255,255,255,.26),rgba(255,255,255,.08));opacity:.38}
+.icon.vybe{background:linear-gradient(145deg,#ff44ae,#8657ff)}.icon.texty{background:linear-gradient(145deg,#ff6ac0,#d23eb4)}.icon.callsy{background:linear-gradient(145deg,#35d879,#129a55)}.icon.pulse{background:linear-gradient(145deg,#8f66ff,#4d35d4)}.icon.travels{background:linear-gradient(145deg,#5fcfff,#5b7dff)}
+.icon.lensy{
+  background:
+    url("assets/icons/icon-512.png") center/cover no-repeat,
+    linear-gradient(145deg,#0b7ec7,#5a45d8,#d6008f);
+}.icon.disabled{background:linear-gradient(145deg,rgba(255,255,255,.26),rgba(255,255,255,.08));opacity:.38}
 .spacer{flex:1}.dock{height:92px;border-radius:31px;display:flex;align-items:center;justify-content:space-around;padding:0 10px;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.30);backdrop-filter:blur(26px) saturate(170%)}.dock .icon{width:66px;height:66px;margin:0;border-radius:21px;font-size:27px}
 .slide-up{animation:slideUp .48s cubic-bezier(.2,.8,.2,1)}@keyframes slideUp{from{transform:translateY(100%);filter:blur(8px);opacity:.4}to{transform:translateY(0);filter:blur(0);opacity:1}}
 .director-hit{position:fixed;right:0;top:0;width:90px;height:90px;z-index:80;opacity:0}
@@ -68,7 +76,7 @@ button,input,select{font:inherit;color:inherit}
       <a class="app-link" href="apps/callsy/index.html"><div class="icon callsy">☎</div><span>Callsy</span></a>
       <div class="app-link"><div class="icon disabled">D</div><span>Draft</span></div>
       <a class="app-link" href="apps/travels/index.html"><div class="icon travels">✈</div><span>Travels</span></a>
-      <div class="app-link"><div class="icon disabled">▧</div><span>Gallery</span></div>
+      <a class="app-link" href="apps/lensy/index.html"><div class="icon lensy"></div><span>Lensy</span></a>
       <a class="app-link" href="apps/pulse/index.html"><div class="icon pulse">♪</div><span>Pulse</span></a>
       <div class="app-link"><div class="icon disabled">⚙</div><span>Settings</span></div>
     </section>
@@ -77,7 +85,7 @@ button,input,select{font:inherit;color:inherit}
       <a class="app-link" href="apps/vybe/index.html"><div class="icon vybe">V</div></a>
       <a class="app-link" href="apps/texty/index.html"><div class="icon texty">T</div></a>
       <a class="app-link" href="apps/callsy/index.html"><div class="icon callsy">☎</div></a>
-      <a class="app-link" href="apps/pulse/index.html"><div class="icon pulse">♪</div></a>
+      <a class="app-link" href="apps/lensy/index.html"><div class="icon lensy"></div></a>
     </nav>
   </div>
 </section>
