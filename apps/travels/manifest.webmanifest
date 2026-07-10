@@ -1,0 +1,10 @@
+{
+  "name": "Travels",
+  "short_name": "Travels",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#f7edf8",
+  "theme_color": "#f7edf8"
+}
