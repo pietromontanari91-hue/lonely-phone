@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#c20a79">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Texty">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Texty</title>
+<style>
+:root{
+ --pink:#ff2aa3;--violet:#8f5cff;--line:rgba(255,255,255,.26);
+ --glass-a:rgba(255,255,255,.19);--glass-b:rgba(255,255,255,.07);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:#fff;background:
+radial-gradient(circle at 15% 0,#ff42ac 0,transparent 28%),
+radial-gradient(circle at 95% 14%,#7c2d8f 0,transparent 35%),
+linear-gradient(180deg,#c60a79,#52063b);overflow:hidden}
+button,input,textarea,select{font:inherit;color:inherit}
+.glass{background:linear-gradient(135deg,var(--glass-a),var(--glass-b));border:1px solid var(--line);box-shadow:0 20px 55px rgba(49,0,30,.3),inset 0 1px 0 rgba(255,255,255,.28);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%)}
+.app{max-width:520px;margin:auto;height:100svh;position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;display:none;padding:calc(env(safe-area-inset-top) + 10px) 10px calc(env(safe-area-inset-bottom) + 10px)}
+.screen.active{display:flex;flex-direction:column}
+.top,.chathead{height:66px;border-radius:25px;display:flex;align-items:center;gap:10px;padding:0 12px;flex:0 0 auto}
+.brand{font-size:27px;font-weight:300;letter-spacing:3px;flex:1}
+.iconbtn,.back{width:41px;height:41px;border:0;border-radius:15px;background:rgba(255,255,255,.13);font-size:20px}
+.search{margin:13px 0 10px;border-radius:20px;padding:12px 14px;display:flex;gap:9px;align-items:center}
+.search input{width:100%;border:0;outline:0;background:transparent;font-size:14px}
+.list{overflow-y:auto;padding-bottom:20px}
+.chatrow{display:flex;align-items:center;gap:12px;padding:13px 11px;border-bottom:1px solid rgba(255,255,255,.10);cursor:pointer}
+.avatar{width:52px;height:52px;border-radius:18px;background:linear-gradient(145deg,#ff5ab7,#845cff);display:grid;place-items:center;font-weight:700;flex:0 0 auto}
+.rowtext{min-width:0;flex:1}.rowtext b{display:block;font-size:14px}.rowtext p{margin:4px 0 0;font-size:12px;opacity:.68;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rowmeta{text-align:right;font-size:11px;opacity:.72}.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:99px;background:#ff4aad;margin-top:7px;padding:0 6px;font-size:10px}
+.chathead .avatar{width:42px;height:42px;border-radius:15px}
+.headmeta{flex:1}.headmeta b{display:block;font-size:14px}.headmeta small{font-size:11px;opacity:.68}
+.messages{flex:1;overflow-y:auto;padding:17px 6px 12px;display:flex;flex-direction:column;gap:9px}
+.day{align-self:center;font-size:10px;padding:6px 10px;border-radius:99px;background:rgba(255,255,255,.11)}
+.msg{max-width:79%;padding:10px 12px;border-radius:19px;font-size:14px;line-height:1.35}
+.msg.in{align-self:flex-start;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.12)}
+.msg.out{align-self:flex-end;background:linear-gradient(145deg,#ff42ad,#9a61ff)}
+.msg .time{display:block;font-size:9px;opacity:.65;text-align:right;margin-top:5px}
+.sender{display:block;font-size:10px;font-weight:700;color:#ffd3ea;margin-bottom:4px}
+.audio{display:flex;align-items:center;gap:10px;min-width:210px}
+.play{width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.18)}
+.wave{flex:1;display:flex;align-items:center;gap:2px;height:28px}.wave i{display:block;width:3px;border-radius:4px;background:rgba(255,255,255,.75)}
+.wave i:nth-child(3n){height:22px}.wave i:nth-child(3n+1){height:12px}.wave i:nth-child(3n+2){height:18px}
+.composer{border-radius:24px;padding:8px;display:flex;align-items:flex-end;gap:8px}
+.composer input{flex:1;border:0;outline:0;background:rgba(255,255,255,.08);border-radius:18px;padding:12px 13px;font-size:14px}
+.send,.mic{width:44px;height:44px;border:0;border-radius:17px;background:linear-gradient(145deg,#ff3daa,#955cff);font-size:19px}
+.recording{display:none;align-items:center;gap:10px;flex:1;padding:0 8px}.recording.show{display:flex}.hidden{display:none!important}
+.dot{width:10px;height:10px;border-radius:50%;background:#ff3e9f;animation:blink .8s infinite}@keyframes blink{50%{opacity:.25}}
+.timer{font-variant-numeric:tabular-nums}.cancel{margin-left:auto;border:0;background:none;font-size:12px;opacity:.7}
+.director{position:fixed;z-index:90;right:16px;top:calc(env(safe-area-inset-top) + 82px);width:48px;height:48px;border-radius:17px;border:1px solid rgba(255,255,255,.25);background:rgba(25,0,16,.45);backdrop-filter:blur(16px);font-size:19px;opacity:.22}
+.panel{position:fixed;z-index:100;inset:0;display:none;background:rgba(13,0,9,.66);padding:calc(env(safe-area-inset-top) + 18px) 12px calc(env(safe-area-inset-bottom) + 18px)}
+.panel.open{display:flex}
+.panel-card{width:min(100%,520px);max-height:100%;margin:auto;border-radius:28px;padding:16px;overflow:auto}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.panel-head h2{margin:0;font-size:20px}.closepanel{width:40px;height:40px;border:0;border-radius:14px;background:rgba(255,255,255,.12);font-size:20px}
+.tabs{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto}.tabs button{border:0;border-radius:14px;padding:9px 12px;background:rgba(255,255,255,.10);white-space:nowrap;font-size:12px}.tabs button.active{background:linear-gradient(145deg,#ff3daa,#955cff)}
+.tab{display:none}.tab.active{display:block}
+.field{margin:10px 0}.field label{display:block;font-size:11px;opacity:.72;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;border:1px solid rgba(255,255,255,.16);outline:0;background:rgba(255,255,255,.08);border-radius:15px;padding:11px}
+.field textarea{min-height:80px;resize:vertical}
+.primary,.secondary{width:100%;border:0;border-radius:15px;padding:12px;margin-top:8px}
+.primary{background:linear-gradient(145deg,#ff3daa,#955cff)}.secondary{background:rgba(255,255,255,.11)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{padding:7px 10px;border-radius:99px;background:rgba(255,255,255,.10);font-size:11px}
+.typing{align-self:flex-start;font-size:12px;opacity:.7;padding:8px 12px;background:rgba(255,255,255,.10);border-radius:18px}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="listScreen" class="screen active">
+<header class="top glass"><div class="brand">Texty</div><button class="iconbtn">⌕</button><button class="iconbtn" id="newChatBtn">＋</button></header>
+<div class="search glass">⌕ <input id="searchInput" placeholder="Cerca nelle chat"></div>
+<div class="list" id="chatList"></div>
+</section>
+
+<section id="chatScreen" class="screen">
+<header class="chathead glass">
+<button class="back">‹</button><div class="avatar" id="chatAvatar">M</div>
+<div class="headmeta"><b id="chatTitle">Martina</b><small id="chatStatus">online</small></div>
+<button class="iconbtn">⌕</button><button class="iconbtn">⋯</button>
+</header>
+<div class="messages" id="messages"></div>
+<div class="composer glass">
+<button class="iconbtn">＋</button>
+<input id="textInput" placeholder="Messaggio">
+<div class="recording" id="recording"><span class="dot"></span><span class="timer" id="timer">0:00</span><button class="cancel" id="cancelRec">Annulla</button></div>
+<button class="send" id="sendBtn">➤</button><button class="mic" id="micBtn">●</button>
+</div>
+</section>
+</div>
+
+<button class="director" id="directorBtn">◈</button>
+
+<div class="panel" id="directorPanel">
+<div class="panel-card glass">
+<div class="panel-head"><h2>Modalità regista</h2><button class="closepanel" id="closePanel">×</button></div>
+<div class="tabs">
+<button class="active" data-tab="scene">Scena</button>
+<button data-tab="group">Nuovo gruppo</button>
+<button data-tab="message">Messaggio</button>
+<button data-tab="settings">Impostazioni</button>
+</div>
+
+<section class="tab active" id="tab-scene">
+<button class="primary" id="incomingBtn">Fai arrivare un messaggio</button>
+<button class="secondary" id="typingBtn">Mostra “sta scrivendo…”</button>
+<button class="secondary" id="incomingAudioBtn">Fai arrivare un vocale</button>
+<button class="secondary" id="resetBtn">Reset scena corrente</button>
+</section>
+
+<section class="tab" id="tab-group">
+<div class="field"><label>Nome gruppo</label><input id="groupName" placeholder="Estate 2026"></div>
+<div class="field"><label>Partecipanti, separati da virgola</label><input id="groupMembers" placeholder="Martina, Luca, Giulia"></div>
+<div class="field"><label>Messaggio iniziale</label><textarea id="groupFirstMessage" placeholder="A che ora partiamo?"></textarea></div>
+<button class="primary" id="createGroupBtn">Crea gruppo</button>
+</section>
+
+<section class="tab" id="tab-message">
+<div class="field"><label>Chat</label><select id="messageChat"></select></div>
+<div class="field"><label>Mittente</label><input id="messageSender" placeholder="Martina"></div>
+<div class="field"><label>Testo</label><textarea id="messageText" placeholder="Scrivi il messaggio"></textarea></div>
+<div class="field"><label>Orario</label><input id="messageTime" type="time"></div>
+<button class="primary" id="addIncomingBtn">Aggiungi messaggio ricevuto</button>
+<button class="secondary" id="addOutgoingBtn">Aggiungi messaggio inviato</button>
+</section>
+
+<section class="tab" id="tab-settings">
+<div class="field"><label>Nome chat corrente</label><input id="editTitle"></div>
+<div class="field"><label>Stato / partecipanti</label><input id="editStatus"></div>
+<div class="field"><label>Iniziale avatar</label><input id="editAvatar" maxlength="2"></div>
+<button class="primary" id="saveChatBtn">Salva modifiche</button>
+<button class="secondary" id="clearAllBtn">Ripristina dati iniziali</button>
+</section>
+</div>
+</div>
+
+<script>
+const seedChats=[
+{id:"martina",title:"Martina",avatar:"M",status:"online",preview:"Sei già uscita?",time:"10:42",unread:2,group:false,messages:[
+{type:"day",text:"Oggi"},{side:"in",text:"Ehi, stasera vieni?",time:"10:31"},{side:"out",text:"Non lo so ancora",time:"10:35"},{side:"in",text:"Dai, ci siamo tutti",time:"10:36"},{side:"in",audio:true,duration:"0:12",time:"10:37"}]},
+{id:"gruppo",title:"Weekend al mare",avatar:"4",status:"4 partecipanti",preview:"Luca: ho prenotato!",time:"09:18",unread:5,group:true,messages:[
+{type:"day",text:"Oggi"},{side:"in",sender:"Luca",text:"Ho prenotato!",time:"09:02"},{side:"in",sender:"Giulia",text:"No vabbè 😍",time:"09:04"},{side:"out",text:"Mandate tutto qui",time:"09:10"},{side:"in",sender:"Martina",audio:true,duration:"0:08",time:"09:12"}]},
+{id:"mamma",title:"Mamma",avatar:"M",status:"ultimo accesso 09:44",preview:"Fammi sapere quando arrivi",time:"Ieri",unread:0,group:false,messages:[
+{type:"day",text:"Ieri"},{side:"in",text:"Hai mangiato?",time:"20:12"},{side:"out",text:"Sì tranquilla",time:"20:15"},{side:"in",text:"Fammi sapere quando arrivi",time:"20:16"}]}
+];
+
+let chats=JSON.parse(localStorage.getItem("textyChats")||"null")||seedChats;
+let current=null,sceneSnapshot=null,recTimer=null,recSeconds=0;
+const list=document.getElementById("chatList"),messages=document.getElementById("messages");
+
+function save(){localStorage.setItem("textyChats",JSON.stringify(chats))}
+function now(){return new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}
+function audioHTML(m){return `<div class="audio"><button class="play">▶</button><div class="wave">${"<i></i>".repeat(16)}</div><span>${m.duration||"0:09"}</span></div>`}
+function renderList(filter=""){
+ list.innerHTML=chats.filter(c=>c.title.toLowerCase().includes(filter.toLowerCase())).map(c=>`<div class="chatrow" data-id="${c.id}">
+ <div class="avatar">${c.avatar}</div><div class="rowtext"><b>${c.title}</b><p>${c.preview||""}</p></div>
+ <div class="rowmeta">${c.time||""}${c.unread?`<div class="badge">${c.unread}</div>`:""}</div></div>`).join("");
+ refreshSelect();
+}
+function renderMessages(){
+ messages.innerHTML=current.messages.map(m=>{
+ if(m.type==="day")return `<div class="day">${m.text}</div>`;
+ return `<div class="msg ${m.side}">${m.sender?`<span class="sender">${m.sender}</span>`:""}${m.audio?audioHTML(m):m.text}<span class="time">${m.time}</span></div>`;
+ }).join("");
+ messages.scrollTop=messages.scrollHeight;
+}
+function openChat(id){
+ current=chats.find(c=>c.id===id);sceneSnapshot=JSON.stringify(current.messages);
+ document.getElementById("chatTitle").textContent=current.title;document.getElementById("chatAvatar").textContent=current.avatar;
+ document.getElementById("chatStatus").textContent=current.status;document.getElementById("listScreen").classList.remove("active");
+ document.getElementById("chatScreen").classList.add("active");renderMessages();fillSettings();
+}
+function addMessage(chat,side,text="",sender="",time=now(),audio=false,duration="0:09"){
+ chat.messages.push({side,text,sender,time,audio,duration});chat.preview=audio?"Messaggio vocale":(sender?sender+": ":"")+text;chat.time=time;save();
+ if(current&&chat.id===current.id)renderMessages();renderList(document.getElementById("searchInput").value);
+}
+function refreshSelect(){document.getElementById("messageChat").innerHTML=chats.map(c=>`<option value="${c.id}">${c.title}</option>`).join("")}
+function fillSettings(){
+ if(!current)return;document.getElementById("editTitle").value=current.title;document.getElementById("editStatus").value=current.status;document.getElementById("editAvatar").value=current.avatar;
+}
+renderList();
+
+document.addEventListener("click",e=>{
+ const row=e.target.closest(".chatrow");if(row)openChat(row.dataset.id);
+ if(e.target.closest(".back")){document.getElementById("chatScreen").classList.remove("active");document.getElementById("listScreen").classList.add("active")}
+ if(e.target.closest("#sendBtn")){const i=document.getElementById("textInput");if(current&&i.value.trim())addMessage(current,"out",i.value.trim());i.value=""}
+ const play=e.target.closest(".play");if(play)play.textContent=play.textContent==="▶"?"❚❚":"▶";
+});
+document.getElementById("searchInput").addEventListener("input",e=>renderList(e.target.value));
+document.getElementById("textInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&current){addMessage(current,"out",e.target.value.trim());e.target.value=""}});
+
+document.getElementById("directorBtn").onclick=()=>document.getElementById("directorPanel").classList.add("open");
+document.getElementById("closePanel").onclick=()=>document.getElementById("directorPanel").classList.remove("open");
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("[data-tab]").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");document.getElementById("tab-"+b.dataset.tab).classList.add("active");
+});
+
+document.getElementById("createGroupBtn").onclick=()=>{
+ const title=document.getElementById("groupName").value.trim(),members=document.getElementById("groupMembers").value.split(",").map(x=>x.trim()).filter(Boolean),first=document.getElementById("groupFirstMessage").value.trim();
+ if(!title)return;
+ const id="group-"+Date.now();const c={id,title,avatar:String(Math.max(members.length,2)),status:`${members.length||2} partecipanti`,preview:first||"Nuovo gruppo",time:now(),unread:0,group:true,messages:[{type:"day",text:"Oggi"}]};
+ if(first)c.messages.push({side:"in",sender:members[0]||"Martina",text:first,time:now()});
+ chats.unshift(c);save();renderList();openChat(id);document.getElementById("directorPanel").classList.remove("open");
+};
+document.getElementById("incomingBtn").onclick=()=>{if(current)addMessage(current,"in","Stiamo già andando, tu dove sei?",current.group?"Martina":"")};
+document.getElementById("typingBtn").onclick=()=>{if(!current)return;const t=document.createElement("div");t.className="typing";t.textContent="sta scrivendo…";messages.appendChild(t);messages.scrollTop=messages.scrollHeight;setTimeout(()=>t.remove(),2500)};
+document.getElementById("incomingAudioBtn").onclick=()=>{if(current)addMessage(current,"in","",current.group?"Giulia":"",now(),true,"0:11")};
+document.getElementById("resetBtn").onclick=()=>{if(current&&sceneSnapshot){current.messages=JSON.parse(sceneSnapshot);save();renderMessages()}};
+
+function addFromPanel(side){
+ const chat=chats.find(c=>c.id===document.getElementById("messageChat").value),text=document.getElementById("messageText").value.trim(),sender=document.getElementById("messageSender").value.trim(),time=document.getElementById("messageTime").value||now();
+ if(chat&&text)addMessage(chat,side,text,sender,time);document.getElementById("messageText").value="";
+}
+document.getElementById("addIncomingBtn").onclick=()=>addFromPanel("in");
+document.getElementById("addOutgoingBtn").onclick=()=>addFromPanel("out");
+document.getElementById("saveChatBtn").onclick=()=>{if(!current)return;current.title=document.getElementById("editTitle").value;current.status=document.getElementById("editStatus").value;current.avatar=document.getElementById("editAvatar").value||"T";save();renderList();openChat(current.id)};
+document.getElementById("clearAllBtn").onclick=()=>{localStorage.removeItem("textyChats");chats=JSON.parse(JSON.stringify(seedChats));save();renderList();document.getElementById("directorPanel").classList.remove("open")};
+
+const mic=document.getElementById("micBtn"),input=document.getElementById("textInput"),recording=document.getElementById("recording");
+mic.onclick=()=>{
+ if(!current)return;
+ if(!recTimer){recSeconds=0;input.classList.add("hidden");recording.classList.add("show");mic.textContent="■";recTimer=setInterval(()=>{recSeconds++;document.getElementById("timer").textContent=`${Math.floor(recSeconds/60)}:${String(recSeconds%60).padStart(2,"0")}`},1000)}
+ else{clearInterval(recTimer);recTimer=null;input.classList.remove("hidden");recording.classList.remove("show");mic.textContent="●";addMessage(current,"out","", "",now(),true,`0:${String(Math.max(recSeconds,1)).padStart(2,"0")}`)}
+};
+document.getElementById("cancelRec").onclick=()=>{clearInterval(recTimer);recTimer=null;input.classList.remove("hidden");recording.classList.remove("show");mic.textContent="●"};
+</script>
+</body>
+</html>
