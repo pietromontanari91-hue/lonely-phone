@@ -1,0 +1,10 @@
+{
+  "name": "Lensy",
+  "short_name": "Lensy",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}

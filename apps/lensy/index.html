@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Lensy">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Lensy</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;overflow:hidden}
+button{font:inherit;color:inherit}
+.app{position:relative;width:100%;height:100dvh;max-width:520px;margin:auto;background:#000;overflow:hidden}
+video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#111}
+.overlay{position:absolute;inset:0;pointer-events:none}
+.topbar{position:absolute;top:calc(env(safe-area-inset-top) + 12px);left:14px;right:14px;display:flex;justify-content:space-between;z-index:4}
+.iconbtn{width:46px;height:46px;border:0;border-radius:17px;background:rgba(20,20,20,.38);backdrop-filter:blur(15px);font-size:20px}
+.gridlines{position:absolute;inset:0;display:none;pointer-events:none}
+.gridlines.show{display:block}
+.gridlines:before,.gridlines:after{content:"";position:absolute;left:33.33%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.28);box-shadow:calc(33.33vw) 0 0 rgba(255,255,255,.28)}
+.gridlines:after{left:0;right:0;top:33.33%;height:1px;width:auto;box-shadow:0 calc(33.33vh) 0 rgba(255,255,255,.28)}
+.bottom{position:absolute;left:0;right:0;bottom:0;padding:18px 22px calc(env(safe-area-inset-bottom) + 18px);background:linear-gradient(180deg,transparent,rgba(0,0,0,.55) 20%,rgba(0,0,0,.82));z-index:5}
+.modes{display:flex;justify-content:center;gap:24px;font-size:12px;margin-bottom:18px}
+.modes span{opacity:.55}.modes .active{opacity:1;color:#ffd75a;font-weight:700}
+.controls{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.thumb{width:54px;height:54px;border-radius:16px;border:2px solid rgba(255,255,255,.85);background:#202020 center/cover no-repeat}
+.shutter{width:78px;height:78px;border-radius:50%;border:5px solid #fff;background:rgba(255,255,255,.18);padding:5px}
+.shutter:before{content:"";display:block;width:100%;height:100%;border-radius:50%;background:#fff}
+.flip{justify-self:end;width:54px;height:54px;border-radius:50%;border:0;background:rgba(30,30,30,.5);backdrop-filter:blur(14px);font-size:24px}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:10}
+.flash.fire{animation:flash .28s ease}
+@keyframes flash{0%{opacity:0}35%{opacity:1}100%{opacity:0}}
+.permission{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#181818,#050505);padding:24px}
+.permission-card{width:100%;max-width:380px;text-align:center}
+.permission-card h1{font-size:32px;margin:0 0 10px}
+.permission-card p{opacity:.7;line-height:1.45}
+.start{width:100%;border:0;border-radius:18px;padding:15px;background:linear-gradient(145deg,#ff2aa3,#8e58ff);font-weight:700;margin-top:12px}
+.gallery{position:absolute;inset:0;z-index:30;background:#090909;display:none;padding:calc(env(safe-area-inset-top) + 14px) 14px calc(env(safe-area-inset-bottom) + 14px)}
+.gallery.open{display:block}
+.gallery-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.gallery-head h2{margin:0}.close{width:42px;height:42px;border:0;border-radius:15px;background:#222}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;overflow-y:auto;max-height:calc(100dvh - 100px)}
+.gallery-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px}
+.error{margin-top:12px;font-size:12px;color:#ff8fae}
+</style>
+</head>
+<body>
+<div class="app">
+  <video id="video" autoplay muted playsinline></video>
+  <canvas id="canvas" hidden></canvas>
+
+  <div class="gridlines" id="gridlines"></div>
+
+  <div class="topbar">
+    <button class="iconbtn" id="gridBtn">#</button>
+    <button class="iconbtn" id="flashBtn">⚡</button>
+  </div>
+
+  <div class="bottom">
+    <div class="modes"><span>VIDEO</span><span class="active">FOTO</span><span>RITRATTO</span></div>
+    <div class="controls">
+      <button class="thumb" id="thumb"></button>
+      <button class="shutter" id="shutter" aria-label="Scatta"></button>
+      <button class="flip" id="flip">↻</button>
+    </div>
+  </div>
+
+  <div class="flash" id="flash"></div>
+
+  <div class="permission" id="permission">
+    <div class="permission-card">
+      <h1>Lensy</h1>
+      <p>Consenti l’accesso alla fotocamera per usare l’anteprima reale e scattare fotografie.</p>
+      <button class="start" id="startCamera">Apri fotocamera</button>
+      <div class="error" id="error"></div>
+    </div>
+  </div>
+
+  <section class="gallery" id="gallery">
+    <div class="gallery-head"><h2>Scatti</h2><button class="close" id="closeGallery">×</button></div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </section>
+</div>
+
+<script>
+const video=document.getElementById("video");
+const canvas=document.getElementById("canvas");
+const permission=document.getElementById("permission");
+const errorBox=document.getElementById("error");
+const thumb=document.getElementById("thumb");
+const gallery=document.getElementById("gallery");
+const galleryGrid=document.getElementById("galleryGrid");
+
+let stream=null;
+let facingMode="environment";
+let photos=JSON.parse(localStorage.getItem("lensyPhotos")||"[]");
+
+async function startCamera(){
+  try{
+    if(stream)stream.getTracks().forEach(t=>t.stop());
+    stream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:facingMode}},
+      audio:false
+    });
+    video.srcObject=stream;
+    permission.style.display="none";
+  }catch(err){
+    errorBox.textContent="Accesso alla fotocamera non disponibile. Apri Lensy da Safari o dalla schermata Home e consenti i permessi.";
+  }
+}
+
+function renderGallery(){
+  galleryGrid.innerHTML=photos.map(src=>`<img src="${src}" alt="">`).join("");
+  if(photos[0])thumb.style.backgroundImage=`url("${photos[0]}")`;
+  else thumb.style.backgroundImage="none";
+}
+
+function shutterSound(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.frequency.value=110;
+    gain.gain.value=.08;
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.start();osc.stop(ctx.currentTime+.06);
+  }catch(e){}
+}
+
+document.getElementById("startCamera").onclick=startCamera;
+
+document.getElementById("flip").onclick=async()=>{
+  facingMode=facingMode==="environment"?"user":"environment";
+  await startCamera();
+};
+
+document.getElementById("gridBtn").onclick=()=>{
+  document.getElementById("gridlines").classList.toggle("show");
+};
+
+document.getElementById("flashBtn").onclick=()=>{
+  document.getElementById("flashBtn").classList.toggle("active");
+};
+
+document.getElementById("shutter").onclick=()=>{
+  if(!video.videoWidth)return;
+
+  const ratio=video.videoWidth/video.videoHeight;
+  const width=1080;
+  const height=Math.round(width/ratio);
+
+  canvas.width=width;
+  canvas.height=height;
+
+  const ctx=canvas.getContext("2d");
+  if(facingMode==="user"){
+    ctx.translate(width,0);
+    ctx.scale(-1,1);
+  }
+  ctx.drawImage(video,0,0,width,height);
+
+  const data=canvas.toDataURL("image/jpeg",.86);
+  photos.unshift(data);
+  photos=photos.slice(0,12);
+
+  try{
+    localStorage.setItem("lensyPhotos",JSON.stringify(photos));
+  }catch(e){
+    photos=photos.slice(0,6);
+    localStorage.setItem("lensyPhotos",JSON.stringify(photos));
+  }
+
+  const flash=document.getElementById("flash");
+  flash.classList.remove("fire");
+  void flash.offsetWidth;
+  flash.classList.add("fire");
+
+  shutterSound();
+  if(navigator.vibrate)navigator.vibrate(35);
+  renderGallery();
+};
+
+thumb.onclick=()=>{gallery.classList.add("open");renderGallery()};
+document.getElementById("closeGallery").onclick=()=>gallery.classList.remove("open");
+
+renderGallery();
+</script>
+</body>
+</html>
