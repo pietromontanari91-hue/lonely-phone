@@ -38,6 +38,14 @@ button,input,select{font:inherit;color:inherit}
 .panel-head{display:flex;justify-content:space-between;align-items:center}.panel-head h2{margin:0;font-size:20px}.close{width:40px;height:40px;border:0;border-radius:14px;background:rgba(255,255,255,.12)}
 .field{margin:12px 0}.field label{display:block;font-size:11px;opacity:.72;margin-bottom:5px}.field input,.field select{width:100%;border:1px solid rgba(255,255,255,.14);outline:0;background:rgba(255,255,255,.08);border-radius:15px;padding:12px}
 .primary,.secondary{width:100%;border:0;border-radius:15px;padding:12px;margin-top:8px}.primary{background:linear-gradient(145deg,var(--pink),var(--violet))}.secondary{background:rgba(255,255,255,.10)}
+
+.notification.scheduled-in{
+  animation:scheduledNotifIn .55s cubic-bezier(.2,.9,.2,1);
+}
+@keyframes scheduledNotifIn{
+  from{transform:translateY(-28px) scale(.96);opacity:0;filter:blur(5px)}
+  to{transform:translateY(0) scale(1);opacity:1;filter:blur(0)}
+}
 </style>
 </head>
 <body>
@@ -85,7 +93,20 @@ button,input,select{font:inherit;color:inherit}
   <div class="field"><label>App</label><select id="notifApp"><option value="texty">Texty</option><option value="callsy">Callsy</option><option value="vybe">VYBE</option></select></div>
   <div class="field"><label>Titolo</label><input id="notifTitle" placeholder="Martina"></div>
   <div class="field"><label>Testo</label><input id="notifText" placeholder="Dove sei?"></div>
-  <button class="primary" id="addNotif">Aggiungi notifica</button>
+  <div class="field">
+    <label>Ritardo</label>
+    <select id="notifDelay">
+      <option value="3">3 secondi</option>
+      <option value="5">5 secondi</option>
+      <option value="10" selected>10 secondi</option>
+      <option value="15">15 secondi</option>
+      <option value="30">30 secondi</option>
+    </select>
+  </div>
+  <button class="primary" id="scheduleNotif">Programma notifica</button>
+  <button class="secondary" id="addNotif">Mostra subito</button>
+  <button class="secondary" id="cancelNotif">Annulla notifica programmata</button>
+  <div class="field"><label>Stato</label><input id="notifCountdown" value="Nessuna notifica programmata" readonly></div>
   <button class="secondary" id="clearNotifs">Rimuovi tutte le notifiche</button>
   <button class="secondary" id="showLock">Mostra lock screen</button>
   <button class="secondary" id="showHome">Mostra Home</button>
@@ -96,6 +117,8 @@ button,input,select{font:inherit;color:inherit}
 <script>
 const $=id=>document.getElementById(id);
 const screens={standby:$("standby"),lockscreen:$("lockscreen"),home:$("home")};
+let scheduledNotificationTimer=null;
+let scheduledNotificationTicker=null;
 let notifications=JSON.parse(localStorage.getItem("lockNotifications")||"null")||[
  {app:"texty",title:"Martina",text:"Dove sei?",time:"ora"},
  {app:"callsy",title:"Chiamata persa",text:"Martina • 1 minuto fa",time:"1 min"},
@@ -114,8 +137,8 @@ function updateClock(){
  $("lockTime").textContent=time;$("homeTime").textContent=time;$("lockDate").textContent=date;
 }
 function appLink(app){return app==="texty"?"apps/texty/index.html":app==="callsy"?"apps/callsy/index.html":"apps/vybe/index.html"}
-function renderNotifications(){
- $("notifications").innerHTML=notifications.map(n=>`<div class="notification" data-app="${n.app}"><div class="notif-icon ${n.app}">${n.app==="texty"?"T":n.app==="callsy"?"☎":"V"}</div><div class="notif-copy"><b>${n.title}</b><p>${n.text}</p></div><span class="notif-time">${n.time||"ora"}</span></div>`).join("");
+function renderNotifications(animateFirst=false){
+ $("notifications").innerHTML=notifications.map((n,index)=>`<div class="notification ${animateFirst&&index===0?"scheduled-in":""}" data-app="${n.app}"><div class="notif-icon ${n.app}">${n.app==="texty"?"T":n.app==="callsy"?"☎":"V"}</div><div class="notif-copy"><b>${n.title}</b><p>${n.text}</p></div><span class="notif-time">${n.time||"ora"}</span></div>`).join("");
  localStorage.setItem("lockNotifications",JSON.stringify(notifications));
 }
 updateClock();setInterval(updateClock,30000);renderNotifications();
@@ -132,7 +155,51 @@ screens.lockscreen.addEventListener("pointerup",()=>{taps++;clearTimeout(tapTime
 
 $("directorHit").onclick=()=>$("panel").classList.add("open");
 $("closePanel").onclick=()=>$("panel").classList.remove("open");
-$("addNotif").onclick=()=>{notifications.unshift({app:$("notifApp").value,title:$("notifTitle").value.trim()||"Nuova notifica",text:$("notifText").value.trim()||"Nuovo messaggio",time:"ora"});renderNotifications()};
+function getNotificationFromPanel(){
+ return {
+   app:$("notifApp").value,
+   title:$("notifTitle").value.trim()||"Nuova notifica",
+   text:$("notifText").value.trim()||"Nuovo messaggio",
+   time:"ora"
+ };
+}
+
+$("addNotif").onclick=()=>{
+ notifications.unshift(getNotificationFromPanel());
+ renderNotifications(true);
+};
+
+$("scheduleNotif").onclick=()=>{
+ clearTimeout(scheduledNotificationTimer);
+ clearInterval(scheduledNotificationTicker);
+
+ const notification=getNotificationFromPanel();
+ const seconds=Number($("notifDelay").value);
+ const target=Date.now()+seconds*1000;
+
+ $("panel").classList.remove("open");
+ showScreen("lockscreen",true);
+
+ scheduledNotificationTicker=setInterval(()=>{
+   const left=Math.max(0,Math.ceil((target-Date.now())/1000));
+   $("notifCountdown").value=left>0?`Notifica tra ${left} secondi`:"Notifica in arrivo";
+   if(left<=0)clearInterval(scheduledNotificationTicker);
+ },200);
+
+ scheduledNotificationTimer=setTimeout(()=>{
+   notifications.unshift(notification);
+   renderNotifications(true);
+   $("notifCountdown").value="Notifica mostrata";
+   if(navigator.vibrate)navigator.vibrate([180,90,180]);
+ },seconds*1000);
+};
+
+$("cancelNotif").onclick=()=>{
+ clearTimeout(scheduledNotificationTimer);
+ clearInterval(scheduledNotificationTicker);
+ $("notifCountdown").value="Notifica annullata";
+};
+
 $("clearNotifs").onclick=()=>{notifications=[];renderNotifications()};
 $("customTime").onchange=e=>{localStorage.setItem("lockTime",e.target.value.trim());updateClock()};
 $("customDate").onchange=e=>{localStorage.setItem("lockDate",e.target.value.trim());updateClock()};
