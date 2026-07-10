@@ -3,54 +3,259 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#b10a72">
+<meta name="theme-color" content="#a20b68">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Almost Phone">
 <title>Almost Phone</title>
+
 <style>
-:root{--pink:#ff2aa3;--violet:#8e58ff;--line:rgba(255,255,255,.28)}
+:root{
+  --pink:#ff2aa3;
+  --violet:#8e58ff;
+  --line:rgba(255,255,255,.26);
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:#fff;background:radial-gradient(circle at 18% 0,#ff3faa 0,transparent 30%),radial-gradient(circle at 90% 15%,#7a2d8f 0,transparent 36%),linear-gradient(180deg,#c20a79,#500738 100%);overflow:hidden}
-.phone{min-height:100svh;max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 14px) 18px calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column}
-.status{display:flex;justify-content:space-between;font-size:14px;font-weight:700;padding:2px 4px 16px}
-h1{margin:0;font-size:36px;letter-spacing:-1.2px}
-.hero p{margin:8px 0 0;font-size:14px;opacity:.72}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 14px;margin-top:34px}
-.app{text-decoration:none;color:#fff;text-align:center;font-size:12px}
-.icon{width:64px;height:64px;margin:0 auto 8px;border-radius:20px;display:grid;place-items:center;font-size:28px;background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.10));border:1px solid var(--line);box-shadow:0 16px 32px rgba(48,0,29,.24),inset 0 1px 0 rgba(255,255,255,.32);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%)}
-.icon.vybe{background:linear-gradient(145deg,#ff44ae,#8e58ff)}
-.app:active .icon{transform:scale(.94)}
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(circle at 18% 0,#ff3faa 0,transparent 30%),
+    radial-gradient(circle at 92% 18%,#71318a 0,transparent 36%),
+    linear-gradient(180deg,#b30970,#42052f 100%);
+  overflow:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:-18%;
+  background:conic-gradient(from 90deg,transparent,#ffffff12,transparent,#ff73c42f,transparent);
+  filter:blur(46px);
+  animation:drift 12s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  to{transform:translate3d(6%,-3%,0) rotate(8deg)}
+}
+.phone{
+  position:relative;
+  z-index:1;
+  min-height:100svh;
+  max-width:520px;
+  margin:0 auto;
+  padding:
+    calc(env(safe-area-inset-top) + 10px)
+    18px
+    calc(env(safe-area-inset-bottom) + 16px);
+  display:flex;
+  flex-direction:column;
+}
+.statusbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 4px 18px;
+  font-size:15px;
+  font-weight:700;
+}
+.status-icons{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:13px;
+}
+.header{
+  margin-top:2px;
+}
+.header h1{
+  margin:0;
+  font-size:32px;
+  line-height:1;
+  letter-spacing:-1px;
+}
+.header p{
+  margin:7px 0 0;
+  font-size:13px;
+  opacity:.68;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px 14px;
+  margin-top:34px;
+}
+.app-link{
+  text-decoration:none;
+  color:#fff;
+  text-align:center;
+  font-size:12px;
+}
+.icon{
+  width:68px;
+  height:68px;
+  margin:0 auto 8px;
+  border-radius:21px;
+  display:grid;
+  place-items:center;
+  font-size:28px;
+  font-weight:700;
+  border:1px solid var(--line);
+  box-shadow:
+    0 16px 34px rgba(39,0,24,.28),
+    inset 0 1px 0 rgba(255,255,255,.28);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+}
+.icon.vybe{
+  background:linear-gradient(145deg,#ff44ae,#8e58ff);
+}
+.icon.texty{
+  background:linear-gradient(145deg,#ff74c2,#b147d8);
+}
+.icon.callsy{
+  background:linear-gradient(145deg,#36d177,#138a55);
+}
+.icon.draft{
+  background:linear-gradient(145deg,rgba(255,255,255,.30),rgba(255,255,255,.10));
+}
+.icon.travels{
+  background:linear-gradient(145deg,#55c9ff,#5877ff);
+}
+.icon.gallery{
+  background:linear-gradient(145deg,#ff9e5c,#ff4f8a);
+}
+.icon.pulse{
+  background:linear-gradient(145deg,#8d6cff,#4d2fb2);
+}
+.icon.settings{
+  background:linear-gradient(145deg,#b7b7c8,#66667a);
+}
+.app-link:active .icon{
+  transform:scale(.94);
+}
+.disabled{
+  opacity:.38;
+  pointer-events:none;
+}
 .spacer{flex:1}
-.dock{display:flex;justify-content:space-around;align-items:center;height:80px;border-radius:28px;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.08));border:1px solid var(--line);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%)}
-.dock .icon{width:54px;height:54px;border-radius:18px;margin:0;font-size:24px}
-.disabled{opacity:.42;pointer-events:none}
+.dock{
+  height:82px;
+  border-radius:29px;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.08));
+  border:1px solid var(--line);
+  box-shadow:
+    0 24px 50px rgba(45,0,27,.32),
+    inset 0 1px 0 rgba(255,255,255,.30);
+  backdrop-filter:blur(24px) saturate(160%);
+  -webkit-backdrop-filter:blur(24px) saturate(160%);
+}
+.dock .icon{
+  width:58px;
+  height:58px;
+  border-radius:19px;
+  margin:0;
+  font-size:24px;
+}
+@media(max-width:390px){
+  .grid{gap:22px 8px}
+  .icon{width:62px;height:62px;border-radius:19px}
+}
 </style>
 </head>
+
 <body>
 <main class="phone">
-<div class="status"><span id="time">09:41</span><span>●●● ᯤ ▰</span></div>
-<section class="hero"><h1>Almost Phone</h1><p>Digital props for <em>(Almost) Lonely</em></p></section>
-<section class="grid">
-<a class="app" href="apps/vybe/index.html"><div class="icon vybe">V</div><span>VYBE</span></a>
-<a class="app" href="apps/texty/index.html"><div class="icon">💬</div><span>Texty</span></a>
-<div class="app disabled"><div class="icon">📝</div><span>Draft</span></div>
-<div class="app disabled"><div class="icon">✈️</div><span>Travels</span></div>
-<div class="app disabled"><div class="icon">🖼️</div><span>Gallery</span></div>
-<div class="app disabled"><div class="icon">🎵</div><span>Pulse</span></div>
-<div class="app disabled"><div class="icon">☀️</div><span>Weather</span></div>
-<div class="app disabled"><div class="icon">⚙️</div><span>Settings</span></div>
-</section>
-<div class="spacer"></div>
-<nav class="dock">
-<a class="app" href="apps/vybe/index.html"><div class="icon vybe">V</div></a>
-<a class="app" href="apps/texty/index.html"><div class="icon">💬</div></a>
-<div class="app disabled"><div class="icon">📝</div></div>
-<div class="app disabled"><div class="icon">✈️</div></div>
-</nav>
+  <div class="statusbar">
+    <span id="time">09:41</span>
+    <div class="status-icons">
+      <span>●●●</span>
+      <span>ᯤ</span>
+      <span>▰</span>
+    </div>
+  </div>
+
+  <section class="header">
+    <h1>Buongiorno</h1>
+    <p>Almost Phone</p>
+  </section>
+
+  <section class="grid">
+    <a class="app-link" href="apps/vybe/index.html">
+      <div class="icon vybe">V</div>
+      <span>VYBE</span>
+    </a>
+
+    <a class="app-link" href="apps/texty/index.html">
+      <div class="icon texty">T</div>
+      <span>Texty</span>
+    </a>
+
+    <a class="app-link" href="apps/callsy/index.html">
+      <div class="icon callsy">☎</div>
+      <span>Callsy</span>
+    </a>
+
+    <div class="app-link disabled">
+      <div class="icon draft">D</div>
+      <span>Draft</span>
+    </div>
+
+    <div class="app-link disabled">
+      <div class="icon travels">✈</div>
+      <span>Travels</span>
+    </div>
+
+    <div class="app-link disabled">
+      <div class="icon gallery">▧</div>
+      <span>Gallery</span>
+    </div>
+
+    <div class="app-link disabled">
+      <div class="icon pulse">♪</div>
+      <span>Pulse</span>
+    </div>
+
+    <div class="app-link disabled">
+      <div class="icon settings">⚙</div>
+      <span>Settings</span>
+    </div>
+  </section>
+
+  <div class="spacer"></div>
+
+  <nav class="dock">
+    <a class="app-link" href="apps/vybe/index.html">
+      <div class="icon vybe">V</div>
+    </a>
+
+    <a class="app-link" href="apps/texty/index.html">
+      <div class="icon texty">T</div>
+    </a>
+
+    <a class="app-link" href="apps/callsy/index.html">
+      <div class="icon callsy">☎</div>
+    </a>
+
+    <div class="app-link disabled">
+      <div class="icon gallery">▧</div>
+    </div>
+  </nav>
 </main>
+
 <script>
-function updateTime(){document.getElementById("time").textContent=new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}
-updateTime();setInterval(updateTime,30000);
+function updateTime(){
+  document.getElementById("time").textContent =
+    new Date().toLocaleTimeString("it-IT",{
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+}
+updateTime();
+setInterval(updateTime,30000);
 </script>
 </body>
 </html>
