@@ -6,7 +6,7 @@ export const defaultLockNotifications = [
 
 export const notificationApps = {
   texty: { href: "apps/texty/index.html", icon: "T" },
-  callsy: { href: "apps/callsy/index.html", icon: "☎" },
+  callsy: { href: "apps/callsy/index.html", icon: "C" },
   vybe: { href: "apps/vybe/index.html", icon: "V" },
-  inbox: { href: "apps/inbox/index.html", icon: "✉" },
+  inbox: { href: "apps/inbox/index.html", icon: "I" },
 };
