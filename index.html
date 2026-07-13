@@ -122,32 +122,29 @@ button,input,select{font:inherit;color:inherit}
 </div>
 </div>
 
-<script>
-const $=id=>document.getElementById(id);
+<script type="module">
+import { $, createScreenController } from "./core/dom.js";
+import { readJSON, writeJSON } from "./core/storage.js";
+import { italianClockParts } from "./core/time.js";
+import { defaultLockNotifications, notificationApps } from "./data/home.js";
+
 const screens={standby:$("standby"),lockscreen:$("lockscreen"),home:$("home")};
+const showScreen=createScreenController(screens);
 let scheduledNotificationTimer=null;
 let scheduledNotificationTicker=null;
-let notifications=JSON.parse(localStorage.getItem("lockNotifications")||"null")||[
- {app:"texty",title:"Martina",text:"Dove sei?",time:"ora"},
- {app:"callsy",title:"Chiamata persa",text:"Martina • 1 minuto fa",time:"1 min"},
- {app:"vybe",title:"VYBE",text:"3 nuove foto",time:"2 min"}
-];
+let notifications=readJSON("lockNotifications",null)||defaultLockNotifications;
 
-function showScreen(name,animated=false){
- Object.values(screens).forEach(s=>s.classList.remove("active","slide-up"));
- screens[name].classList.add("active");
- if(animated)screens[name].classList.add("slide-up");
-}
 function updateClock(){
- const now=new Date();
- const time=localStorage.getItem("lockTime")||now.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
- const date=localStorage.getItem("lockDate")||now.toLocaleDateString("it-IT",{weekday:"long",day:"numeric",month:"long"});
+ const now=italianClockParts();
+ const time=localStorage.getItem("lockTime")||now.time;
+ const date=localStorage.getItem("lockDate")||now.date;
  $("lockTime").textContent=time;$("homeTime").textContent=time;$("lockDate").textContent=date;
 }
-function appLink(app){return app==="texty"?"apps/texty/index.html":app==="callsy"?"apps/callsy/index.html":"apps/vybe/index.html"}
+function appLink(app){return notificationApps[app]?.href||notificationApps.vybe.href}
+function notificationIcon(app){return notificationApps[app]?.icon||notificationApps.vybe.icon}
 function renderNotifications(animateFirst=false){
- $("notifications").innerHTML=notifications.map((n,index)=>`<div class="notification ${animateFirst&&index===0?"scheduled-in":""}" data-app="${n.app}"><div class="notif-icon ${n.app}">${n.app==="texty"?"T":n.app==="callsy"?"☎":"V"}</div><div class="notif-copy"><b>${n.title}</b><p>${n.text}</p></div><span class="notif-time">${n.time||"ora"}</span></div>`).join("");
- localStorage.setItem("lockNotifications",JSON.stringify(notifications));
+ $("notifications").innerHTML=notifications.map((n,index)=>`<div class="notification ${animateFirst&&index===0?"scheduled-in":""}" data-app="${n.app}"><div class="notif-icon ${n.app}">${notificationIcon(n.app)}</div><div class="notif-copy"><b>${n.title}</b><p>${n.text}</p></div><span class="notif-time">${n.time||"ora"}</span></div>`).join("");
+ writeJSON("lockNotifications",notifications);
 }
 updateClock();setInterval(updateClock,30000);renderNotifications();
 
