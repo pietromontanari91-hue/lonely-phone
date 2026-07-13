@@ -1,0 +1,15 @@
+:root{
+  --paper:#F4EFE6;
+  --paper-deep:#E5DAC9;
+  --dust-blue:#9FB3BD;
+  --light-blue:#BFD7E3;
+  --slate:#5F737D;
+  --petrol:#4F7487;
+  --charcoal:#263037;
+  --ink:#1F272C;
+  --glass-light:rgba(244,239,230,.58);
+  --glass-quiet:rgba(255,255,255,.24);
+  --hairline:rgba(31,39,44,.14);
+  --shadow-soft:0 22px 58px rgba(31,39,44,.18);
+  --shadow-icon:0 16px 34px rgba(31,39,44,.20),inset 0 1px 0 rgba(255,255,255,.62);
+}
