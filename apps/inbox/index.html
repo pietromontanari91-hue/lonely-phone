@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#2f3d45">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Inbox">
+<link rel="manifest" href="../../manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+<title>Inbox</title>
+</head>
+<body>
+<main class="inbox-shell">
+  <section id="listView">
+    <header class="masthead">
+      <a class="back" href="../../index.html" aria-label="Torna alla home">‹</a>
+      <div>
+        <p class="eyebrow">Pandrero OS Mail</p>
+        <h1>Inbox</h1>
+      </div>
+      <button class="director-open" id="directorOpen" aria-label="Apri regia">✦</button>
+    </header>
+
+    <section class="hero-card" aria-labelledby="interlineeTitle">
+      <div class="cover-placeholder" aria-label="Placeholder immagine copertina magazine Interlinee">
+        <span>Magazine cover</span>
+        <strong>Soli in città... o quasi</strong>
+      </div>
+      <div class="hero-copy">
+        <p class="kicker">Newsletter premium</p>
+        <h2 id="interlineeTitle">Interlinee Mag</h2>
+        <p>Il nuovo numero è pronto per essere consegnato come una rivista editoriale da sfogliare.</p>
+        <button id="scheduleInterlinee" class="editorial-button">Programma Interlinee</button>
+      </div>
+    </section>
+
+    <section class="tools" aria-label="Strumenti Inbox">
+      <label class="search-label">Cerca<input id="searchInput" type="search" placeholder="Mittente, oggetto o anteprima"></label>
+      <button class="secondary-button" id="markAllRead">Segna tutto come letto</button>
+    </section>
+
+    <section class="mail-section">
+      <div class="section-title">
+        <p class="eyebrow">Oggi</p>
+        <h2>Posta in arrivo</h2>
+      </div>
+      <div id="mailList" class="mail-list" aria-live="polite"></div>
+    </section>
+  </section>
+
+  <article id="detailView" class="detail-view" hidden>
+    <header class="detail-header">
+      <button class="back" id="backToList" aria-label="Torna alla lista">‹</button>
+      <div>
+        <p class="eyebrow" id="detailSender">Mittente</p>
+        <h1 id="detailSubject">Oggetto</h1>
+      </div>
+    </header>
+    <div class="detail-meta"><span id="detailTime">ora</span><span id="detailReadState">Letta</span></div>
+    <section id="detailBody" class="detail-body"></section>
+  </article>
+</main>
+
+<section class="director-panel" id="directorPanel" aria-hidden="true">
+  <form class="director-card" id="directorForm">
+    <div class="panel-head">
+      <div><p class="eyebrow">Director mode</p><h2>Programma email</h2></div>
+      <button type="button" class="close" id="directorClose">×</button>
+    </div>
+    <label>Mittente<input id="sender" value="Interlinee Mag"></label>
+    <label>Oggetto<input id="subject" value="Il nuovo numero è in edicola"></label>
+    <label>Anteprima<textarea id="preview" rows="3">Soli in città... o quasi — il nuovo numero editoriale di Interlinee Mag.</textarea></label>
+    <label>Ritardo<select id="delay"><option value="3">3 secondi</option><option value="5" selected>5 secondi</option><option value="10">10 secondi</option><option value="30">30 secondi</option></select></label>
+    <button class="editorial-button" type="submit">Programma email</button>
+    <output id="scheduleStatus">Nessuna email programmata</output>
+  </form>
+</section>
+<script type="module" src="app.js"></script>
+</body>
+</html>

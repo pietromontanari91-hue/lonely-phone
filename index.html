@@ -12,6 +12,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <style>
 :root{--pink:#ff2aa3;--violet:#8e58ff;--line:rgba(255,255,255,.28)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -25,14 +26,14 @@ button,input,select{font:inherit;color:inherit}
 .lock-top{text-align:center;margin-top:16px}.lock-time{font-size:82px;font-weight:200;letter-spacing:-5px;line-height:.95}.lock-date{margin-top:10px;font-size:17px;opacity:.78}
 .notifications{margin-top:42px;display:grid;gap:10px}
 .notification{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(22px) saturate(160%);box-shadow:0 16px 35px rgba(35,0,25,.24)}
-.notif-icon{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;font-weight:700;flex:0 0 auto}.notif-icon.texty{background:linear-gradient(145deg,#ff6ac0,#d23eb4)}.notif-icon.callsy{background:linear-gradient(145deg,#35d879,#129a55)}.notif-icon.vybe{background:linear-gradient(145deg,#ff44ae,#8657ff)}
+.notif-icon{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;font-weight:700;flex:0 0 auto}.notif-icon.texty{background:linear-gradient(145deg,#ff6ac0,#d23eb4)}.notif-icon.callsy{background:linear-gradient(145deg,#35d879,#129a55)}.notif-icon.vybe{background:linear-gradient(145deg,#ff44ae,#8657ff)}.notif-icon.inbox{background:linear-gradient(145deg,#f4efe6,#9fb3bd);color:#263037}
 .notif-copy{min-width:0;flex:1}.notif-copy b{display:block;font-size:13px}.notif-copy p{margin:3px 0 0;font-size:12px;opacity:.76;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.notif-time{font-size:10px;opacity:.6}
 .lock-bottom{position:absolute;left:18px;right:18px;bottom:calc(env(safe-area-inset-bottom) + 20px)}.quick-row{display:flex;justify-content:space-between}.quick{width:54px;height:54px;border-radius:50%;border:0;background:rgba(20,0,14,.32);font-size:22px}.swipe{text-align:center;margin-top:16px;font-size:12px;opacity:.72}
 .home-inner{height:100%;padding:calc(env(safe-area-inset-top) + 10px) 18px calc(env(safe-area-inset-bottom) + 14px);display:flex;flex-direction:column}
 .statusbar{display:flex;justify-content:space-between;padding:0 3px 18px;font-size:15px;font-weight:700}.header h1{margin:0;font-size:36px;letter-spacing:-1.4px}.header p{margin:8px 0 0;font-size:14px;opacity:.72}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px 12px;margin-top:38px}.app-link{text-decoration:none;color:#fff;text-align:center;font-size:13px}
 .icon{width:76px;height:76px;margin:0 auto 9px;border-radius:23px;display:grid;place-items:center;font-size:31px;font-weight:700;border:1px solid var(--line);box-shadow:0 18px 40px rgba(35,0,25,.28),inset 0 1px 0 rgba(255,255,255,.32)}
-.icon.vybe{background:linear-gradient(145deg,#ff44ae,#8657ff)}.icon.texty{background:linear-gradient(145deg,#ff6ac0,#d23eb4)}.icon.callsy{background:linear-gradient(145deg,#35d879,#129a55)}.icon.pulse{background:linear-gradient(145deg,#8f66ff,#4d35d4)}.icon.travels{background:linear-gradient(145deg,#5fcfff,#5b7dff)}
+.icon.vybe{background:linear-gradient(145deg,#ff44ae,#8657ff)}.icon.texty{background:linear-gradient(145deg,#ff6ac0,#d23eb4)}.icon.callsy{background:linear-gradient(145deg,#35d879,#129a55)}.icon.pulse{background:linear-gradient(145deg,#8f66ff,#4d35d4)}.icon.travels{background:linear-gradient(145deg,#5fcfff,#5b7dff)}.icon.inbox{background:linear-gradient(145deg,#f4efe6,#9fb3bd);color:#263037}
 .icon.lensy{
   background:
     url("assets/icons/icon-512.png") center/cover no-repeat,
@@ -74,7 +75,7 @@ button,input,select{font:inherit;color:inherit}
       <a class="app-link" href="apps/vybe/index.html"><div class="icon vybe">V</div><span>VYBE</span></a>
       <a class="app-link" href="apps/texty/index.html"><div class="icon texty">T</div><span>Texty</span></a>
       <a class="app-link" href="apps/callsy/index.html"><div class="icon callsy">☎</div><span>Callsy</span></a>
-      <div class="app-link"><div class="icon disabled">D</div><span>Draft</span></div>
+      <a class="app-link" href="apps/inbox/index.html"><div class="icon inbox">✉</div><span>Inbox</span></a>
       <a class="app-link" href="apps/travels/index.html"><div class="icon travels">✈</div><span>Travels</span></a>
       <a class="app-link" href="apps/lensy/index.html"><div class="icon lensy"></div><span>Lensy</span></a>
       <a class="app-link" href="apps/pulse/index.html"><div class="icon pulse">♪</div><span>Pulse</span></a>
@@ -98,7 +99,7 @@ button,input,select{font:inherit;color:inherit}
   <div class="panel-head"><h2>Regia lock screen</h2><button class="close" id="closePanel">×</button></div>
   <div class="field"><label>Ora personalizzata</label><input id="customTime" placeholder="09:41"></div>
   <div class="field"><label>Data personalizzata</label><input id="customDate" placeholder="Venerdì 10 luglio"></div>
-  <div class="field"><label>App</label><select id="notifApp"><option value="texty">Texty</option><option value="callsy">Callsy</option><option value="vybe">VYBE</option></select></div>
+  <div class="field"><label>App</label><select id="notifApp"><option value="texty">Texty</option><option value="callsy">Callsy</option><option value="vybe">VYBE</option><option value="inbox">Inbox</option></select></div>
   <div class="field"><label>Titolo</label><input id="notifTitle" placeholder="Martina"></div>
   <div class="field"><label>Testo</label><input id="notifText" placeholder="Dove sei?"></div>
   <div class="field">
@@ -112,6 +113,8 @@ button,input,select{font:inherit;color:inherit}
     </select>
   </div>
   <button class="primary" id="scheduleNotif">Programma notifica</button>
+  <button class="secondary" id="scheduleInterlineeEmail">Programma email Interlinee</button>
+  <button class="secondary" id="resetInterlineeEmail">Reset Interlinee</button>
   <button class="secondary" id="addNotif">Mostra subito</button>
   <button class="secondary" id="cancelNotif">Annulla notifica programmata</button>
   <div class="field"><label>Stato</label><input id="notifCountdown" value="Nessuna notifica programmata" readonly></div>
@@ -127,11 +130,14 @@ import { $, createScreenController } from "./core/dom.js";
 import { readJSON, writeJSON } from "./core/storage.js";
 import { italianClockParts } from "./core/time.js";
 import { defaultLockNotifications, notificationApps } from "./data/home.js";
+import { interlineeEmail, removeUndeliveredInterlineeSeed, resetInterlineeDelivery, scheduleEmailDelivery } from "./core/emailScheduler.js";
+import { startSchedulerRunner } from "./core/schedulerRunner.js";
 
 const screens={standby:$("standby"),lockscreen:$("lockscreen"),home:$("home")};
 const showScreen=createScreenController(screens);
 let scheduledNotificationTimer=null;
 let scheduledNotificationTicker=null;
+removeUndeliveredInterlineeSeed();
 let notifications=readJSON("lockNotifications",null)||defaultLockNotifications;
 
 function updateClock(){
@@ -140,16 +146,29 @@ function updateClock(){
  const date=localStorage.getItem("lockDate")||now.date;
  $("lockTime").textContent=time;$("homeTime").textContent=time;$("lockDate").textContent=date;
 }
-function appLink(app){return notificationApps[app]?.href||notificationApps.vybe.href}
+function appLink(app, href){return href||notificationApps[app]?.href||notificationApps.vybe.href}
 function notificationIcon(app){return notificationApps[app]?.icon||notificationApps.vybe.icon}
 function renderNotifications(animateFirst=false){
- $("notifications").innerHTML=notifications.map((n,index)=>`<div class="notification ${animateFirst&&index===0?"scheduled-in":""}" data-app="${n.app}"><div class="notif-icon ${n.app}">${notificationIcon(n.app)}</div><div class="notif-copy"><b>${n.title}</b><p>${n.text}</p></div><span class="notif-time">${n.time||"ora"}</span></div>`).join("");
+ $("notifications").innerHTML=notifications.map((n,index)=>`<div class="notification ${animateFirst&&index===0?"scheduled-in":""}" data-app="${n.app}" data-href="${n.href||''}"><div class="notif-icon ${n.app}">${notificationIcon(n.app)}</div><div class="notif-copy"><b>${n.title}</b><p>${n.text}</p></div><span class="notif-time">${n.time||"ora"}</span></div>`).join("");
  writeJSON("lockNotifications",notifications);
 }
-updateClock();setInterval(updateClock,30000);renderNotifications();
+
+function syncNotificationsFromStorage(animateFirst=false){
+ notifications=readJSON("lockNotifications",[])||[];
+ renderNotifications(animateFirst);
+}
+function handleDeliveredEmails(delivered){
+ if(delivered.length){
+   syncNotificationsFromStorage(true);
+   showScreen("lockscreen",true);
+   if(navigator.vibrate)navigator.vibrate([180,90,180]);
+ }
+}
+
+updateClock();setInterval(updateClock,30000);renderNotifications();startSchedulerRunner({onDeliver:handleDeliveredEmails});
 
 screens.standby.onclick=()=>showScreen("lockscreen",true);
-document.addEventListener("click",e=>{const n=e.target.closest(".notification");if(n)location.href=appLink(n.dataset.app)});
+document.addEventListener("click",e=>{const n=e.target.closest(".notification");if(n)location.href=appLink(n.dataset.app,n.dataset.href)});
 
 let startY=0;
 screens.lockscreen.addEventListener("touchstart",e=>startY=e.touches[0].clientY,{passive:true});
@@ -199,6 +218,23 @@ $("scheduleNotif").onclick=()=>{
  },seconds*1000);
 };
 
+$("scheduleInterlineeEmail").onclick=()=>{
+ clearTimeout(scheduledNotificationTimer);
+ clearInterval(scheduledNotificationTicker);
+ const seconds=Number($("notifDelay").value);
+ const event=scheduleEmailDelivery(interlineeEmail,seconds);
+ $("notifCountdown").value=`Interlinee programmata per ${new Date(event.targetAt).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}`;
+ $("panel").classList.remove("open");
+ showScreen("lockscreen",true);
+};
+
+$("resetInterlineeEmail").onclick=()=>{
+ resetInterlineeDelivery();
+ notifications=readJSON("lockNotifications",[])||[];
+ renderNotifications();
+ $("notifCountdown").value="Interlinee resettata";
+};
+
 $("cancelNotif").onclick=()=>{
  clearTimeout(scheduledNotificationTimer);
  clearInterval(scheduledNotificationTicker);
@@ -211,6 +247,9 @@ $("customDate").onchange=e=>{localStorage.setItem("lockDate",e.target.value.trim
 $("showLock").onclick=()=>{$("panel").classList.remove("open");showScreen("lockscreen",true)};
 $("showHome").onclick=()=>{$("panel").classList.remove("open");showScreen("home",true)};
 $("showStandby").onclick=()=>{$("panel").classList.remove("open");showScreen("standby")};
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
 </script>
 </body>
 </html>
