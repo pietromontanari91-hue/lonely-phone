@@ -8,4 +8,5 @@ export const notificationApps = {
   texty: { href: "apps/texty/index.html", icon: "T" },
   callsy: { href: "apps/callsy/index.html", icon: "☎" },
   vybe: { href: "apps/vybe/index.html", icon: "V" },
+  inbox: { href: "apps/inbox/index.html", icon: "✉" },
 };
