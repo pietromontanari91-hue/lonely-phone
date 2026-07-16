@@ -1,9 +1,10 @@
-const CACHE_NAME = "almost-phone-root-v6";
+const CACHE_NAME = "almost-phone-root-v7";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./core/design-tokens.css",
+  "./core/app-theme.css",
   "./core/shell.css",
   "./core/dom.js",
   "./core/storage.js",

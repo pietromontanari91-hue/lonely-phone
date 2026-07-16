@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#c20a79">
+<meta name="theme-color" content="#F4EFE6">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Texty">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="../../core/design-tokens.css">
 <title>Texty</title>
 <style>
 :root{
@@ -67,9 +68,11 @@ button,input,textarea,select{font:inherit;color:inherit}
 .primary{background:linear-gradient(145deg,#ff3daa,#955cff)}.secondary{background:rgba(255,255,255,.11)}
 .chips{display:flex;flex-wrap:wrap;gap:7px}.chip{padding:7px 10px;border-radius:99px;background:rgba(255,255,255,.10);font-size:11px}
 .typing{align-self:flex-start;font-size:12px;opacity:.7;padding:8px 12px;background:rgba(255,255,255,.10);border-radius:18px}
+
 </style>
+<link rel="stylesheet" href="../../core/app-theme.css">
 </head>
-<body>
+<body class="pandrero-app pandrero-texty">
 <div class="app">
 <section id="listScreen" class="screen active">
 <header class="top glass"><div class="brand">Texty</div><button class="iconbtn">⌕</button><button class="iconbtn" id="newChatBtn">＋</button></header>

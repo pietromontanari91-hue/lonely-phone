@@ -1,0 +1,369 @@
+/* Shared Pandrero OS app theme.
+   App pages load design-tokens.css first, then keep their own layout CSS,
+   then this scoped theme layer for common chrome. */
+
+.pandrero-app {
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(120% 88% at 18% -8%, rgba(191, 215, 227, .86) 0 34%, transparent 59%),
+    radial-gradient(90% 70% at 98% 12%, rgba(159, 179, 189, .66) 0 30%, transparent 58%),
+    radial-gradient(85% 60% at 14% 92%, rgba(229, 218, 201, .86) 0 42%, transparent 68%),
+    linear-gradient(150deg, var(--paper) 0%, #edf1ee 43%, var(--paper-deep) 100%);
+}
+
+.pandrero-app::before {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  pointer-events: none;
+  background:
+    linear-gradient(118deg, transparent 0 26%, rgba(38, 48, 55, .08) 26.3% 27.2%, transparent 27.5% 100%),
+    radial-gradient(80% 38% at 70% 74%, rgba(79, 116, 135, .16), transparent 62%);
+  z-index: 0;
+}
+
+.pandrero-app .app {
+  position: relative;
+  color: var(--ink);
+}
+
+.pandrero-app .app > * {
+  position: relative;
+  z-index: 1;
+}
+
+.pandrero-surface {
+  background: linear-gradient(135deg, rgba(244, 239, 230, .72), rgba(255, 255, 255, .34));
+  border: 1px solid rgba(255, 255, 255, .58);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(28px) saturate(135%);
+  -webkit-backdrop-filter: blur(28px) saturate(135%);
+}
+
+.pandrero-control {
+  background: rgba(244, 239, 230, .54);
+  border: 1px solid var(--hairline);
+  color: var(--charcoal);
+  transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+}
+
+.pandrero-control:active,
+.pandrero-primary:active {
+  transform: scale(.96);
+}
+
+.pandrero-primary {
+  background: linear-gradient(145deg, var(--petrol), var(--charcoal));
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(31, 39, 44, .18);
+}
+
+.pandrero-app input,
+.pandrero-app textarea,
+.pandrero-app select {
+  caret-color: var(--petrol);
+}
+
+.pandrero-app .field label,
+.pandrero-app small,
+.pandrero-app .count,
+.pandrero-app .comments {
+  color: var(--slate);
+}
+
+.pandrero-texty .top,
+.pandrero-texty .chathead,
+.pandrero-texty .search,
+.pandrero-texty .composer,
+.pandrero-texty .panel-card {
+  background: linear-gradient(135deg, rgba(244, 239, 230, .76), rgba(255, 255, 255, .38));
+  border-color: rgba(255, 255, 255, .58);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+}
+
+.pandrero-texty .brand,
+.pandrero-texty .rowtext b,
+.pandrero-texty .headmeta b,
+.pandrero-texty .panel-head h2 {
+  color: var(--charcoal);
+}
+
+.pandrero-texty .iconbtn,
+.pandrero-texty .back,
+.pandrero-texty .closepanel,
+.pandrero-texty .tabs button,
+.pandrero-texty .secondary {
+  background: rgba(244, 239, 230, .54);
+  border: 1px solid var(--hairline);
+  color: var(--charcoal);
+}
+
+.pandrero-texty .send,
+.pandrero-texty .mic,
+.pandrero-texty .primary,
+.pandrero-texty .tabs button.active,
+.pandrero-texty .msg.out {
+  background: linear-gradient(145deg, var(--petrol), var(--charcoal));
+  color: #fff;
+}
+
+.pandrero-texty .msg.in,
+.pandrero-texty .typing,
+.pandrero-texty .day {
+  background: rgba(244, 239, 230, .62);
+  border: 1px solid rgba(31, 39, 44, .10);
+  color: var(--ink);
+}
+
+.pandrero-texty .msg.out .time,
+.pandrero-texty .msg.out .sender {
+  color: rgba(255, 255, 255, .78);
+}
+
+.pandrero-texty .avatar {
+  background: linear-gradient(145deg, var(--light-blue), var(--petrol));
+  color: #fff;
+}
+
+.pandrero-vybe .topbar,
+.pandrero-vybe .card,
+.pandrero-vybe .bottom-nav,
+.pandrero-vybe .panel-card {
+  background: linear-gradient(135deg, rgba(244, 239, 230, .68), rgba(255, 255, 255, .28));
+  border-color: rgba(255, 255, 255, .56);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+}
+
+.pandrero-vybe .media {
+  background: var(--charcoal);
+}
+
+.pandrero-vybe .media img,
+.pandrero-vybe .media video {
+  display: block;
+}
+
+.pandrero-vybe .location {
+  background: rgba(31, 39, 44, .36);
+  color: #fff;
+  border-color: rgba(255, 255, 255, .42);
+}
+
+.pandrero-vybe .top-button,
+.pandrero-vybe .action,
+.pandrero-vybe .nav-btn,
+.pandrero-vybe .closepanel,
+.pandrero-vybe .secondary {
+  background: rgba(244, 239, 230, .54);
+  border: 1px solid var(--hairline);
+  color: var(--charcoal);
+}
+
+.pandrero-vybe .action.liked,
+.pandrero-vybe .primary,
+.pandrero-vybe .tabs button.active {
+  background: linear-gradient(145deg, var(--petrol), var(--charcoal));
+  color: #fff;
+}
+
+.pandrero-callsy {
+  background: #000;
+}
+
+.pandrero-callsy::before {
+  display: none;
+}
+
+.pandrero-callsy .panel-card {
+  background: linear-gradient(135deg, rgba(244, 239, 230, .82), rgba(191, 215, 227, .54));
+  border: 1px solid rgba(255, 255, 255, .52);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+}
+
+.pandrero-callsy .lock,
+.pandrero-callsy .incall {
+  color: #fff;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(159, 179, 189, .24), transparent 28%),
+    radial-gradient(circle at 78% 38%, rgba(79, 116, 135, .22), transparent 30%),
+    linear-gradient(180deg, #111820, #020304 78%);
+}
+
+.pandrero-callsy .avatar {
+  background: linear-gradient(145deg, var(--dust-blue), var(--petrol));
+}
+
+.pandrero-callsy .control button,
+.pandrero-callsy .director-trigger,
+.pandrero-callsy .close-panel,
+.pandrero-callsy .secondary {
+  background: rgba(255, 255, 255, .13);
+  border: 1px solid rgba(255, 255, 255, .22);
+  color: #fff;
+}
+
+.pandrero-callsy .primary {
+  background: linear-gradient(145deg, var(--petrol), var(--charcoal));
+  color: #fff;
+}
+
+.pandrero-callsy .decline,
+.pandrero-callsy .control.end button {
+  background: #b85a5f;
+}
+
+.pandrero-callsy .accept {
+  background: linear-gradient(145deg, #6f9387, var(--petrol));
+}
+
+.pandrero-travels .topbar,
+.pandrero-travels .board,
+.pandrero-travels .modal-card {
+  background: linear-gradient(135deg, rgba(244, 239, 230, .78), rgba(255, 255, 255, .42));
+  border-color: rgba(255, 255, 255, .62);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+}
+
+.pandrero-travels .brand,
+.pandrero-travels .heading h1,
+.pandrero-travels .board-title h2 {
+  color: var(--charcoal);
+}
+
+.pandrero-travels .search,
+.pandrero-travels .board-title button,
+.pandrero-travels .cancel {
+  background: rgba(244, 239, 230, .54);
+  border: 1px solid var(--hairline);
+  color: var(--charcoal);
+}
+
+.pandrero-travels .edit,
+.pandrero-travels .save {
+  background: linear-gradient(145deg, var(--petrol), var(--charcoal));
+  color: #fff;
+}
+
+.pandrero-travels .collage img {
+  box-shadow: 0 10px 28px rgba(31, 39, 44, .16);
+}
+
+.pandrero-pulse .top,
+.pandrero-pulse .card {
+  background: linear-gradient(135deg, rgba(244, 239, 230, .76), rgba(255, 255, 255, .36));
+  border-color: rgba(255, 255, 255, .58);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+}
+
+.pandrero-pulse .brand,
+.pandrero-pulse .card h1,
+.pandrero-pulse .device-info b {
+  color: var(--charcoal);
+}
+
+.pandrero-pulse .iconbtn,
+.pandrero-pulse .device,
+.pandrero-pulse .device-icon {
+  background: rgba(244, 239, 230, .54);
+  border: 1px solid var(--hairline);
+  color: var(--charcoal);
+}
+
+.pandrero-pulse .bluetooth,
+.pandrero-pulse .connect {
+  background: linear-gradient(145deg, var(--dust-blue), var(--petrol));
+  color: #fff;
+}
+
+.pandrero-pulse .toast {
+  background: rgba(31, 39, 44, .78);
+  color: #fff;
+}
+
+.pandrero-lensy {
+  background: #000;
+}
+
+.pandrero-lensy::before {
+  display: none;
+}
+
+.pandrero-lensy .app {
+  background: #000;
+  color: #fff;
+}
+
+.pandrero-lensy .iconbtn,
+.pandrero-lensy .flip,
+.pandrero-lensy .close {
+  background: rgba(31, 39, 44, .46);
+  border: 1px solid rgba(255, 255, 255, .24);
+  color: #fff;
+}
+
+.pandrero-lensy .bottom {
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .55) 20%, rgba(0, 0, 0, .86));
+}
+
+.pandrero-lensy .modes .active {
+  color: var(--light-blue);
+}
+
+.pandrero-lensy .shutter {
+  border-color: rgba(244, 239, 230, .96);
+  background: rgba(255, 255, 255, .18);
+}
+
+.pandrero-lensy .permission,
+.pandrero-lensy .gallery {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(159, 179, 189, .20), transparent 30%),
+    linear-gradient(180deg, #111820, #050607);
+}
+
+.pandrero-lensy .permission-card {
+  padding: 24px;
+  border-radius: 34px;
+  background: linear-gradient(135deg, rgba(244, 239, 230, .16), rgba(255, 255, 255, .07));
+  border: 1px solid rgba(255, 255, 255, .18);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.pandrero-lensy .start {
+  background: linear-gradient(145deg, var(--petrol), var(--charcoal));
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pandrero-texty .top,
+  .pandrero-texty .chathead,
+  .pandrero-texty .composer,
+  .pandrero-vybe .topbar,
+  .pandrero-vybe .card,
+  .pandrero-travels .topbar,
+  .pandrero-travels .board,
+  .pandrero-pulse .top,
+  .pandrero-pulse .card {
+    animation: pandrero-rise .44s cubic-bezier(.2, .8, .2, 1) both;
+  }
+}
+
+@keyframes pandrero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
