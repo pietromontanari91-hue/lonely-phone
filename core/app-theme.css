@@ -367,3 +367,327 @@
     filter: blur(0);
   }
 }
+
+/* 2026 visual identity refinement: app-specific personalities on the shared Pandrero OS tokens. */
+.pandrero-app {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    sans-serif;
+  letter-spacing: -.01em;
+}
+
+.pandrero-app .glass {
+  backdrop-filter: blur(30px) saturate(128%);
+  -webkit-backdrop-filter: blur(30px) saturate(128%);
+}
+
+/* TEXTY — minimal, quiet, iMessage/Notion-inspired conversations. */
+.pandrero-texty {
+  background-image:
+    radial-gradient(92% 66% at 18% -10%, rgba(191, 215, 227, .58) 0 30%, transparent 58%),
+    radial-gradient(74% 58% at 92% 4%, rgba(229, 218, 201, .72) 0 32%, transparent 62%),
+    linear-gradient(180deg, #f8f5ee 0%, var(--paper) 52%, #ece4d7 100%);
+}
+
+.pandrero-texty::before {
+  opacity: .18;
+  background: radial-gradient(68% 38% at 68% 80%, rgba(79, 116, 135, .12), transparent 66%);
+}
+
+.pandrero-texty .screen {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.pandrero-texty .top,
+.pandrero-texty .chathead,
+.pandrero-texty .search,
+.pandrero-texty .composer,
+.pandrero-texty .panel-card {
+  background: rgba(255, 255, 255, .52);
+  border-color: rgba(31, 39, 44, .08);
+  box-shadow: 0 18px 46px rgba(31, 39, 44, .08), inset 0 1px 0 rgba(255, 255, 255, .72);
+}
+
+.pandrero-texty .brand {
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -.03em;
+}
+
+.pandrero-texty .chatrow {
+  padding: 15px 6px;
+  border-bottom-color: rgba(31, 39, 44, .07);
+}
+
+.pandrero-texty .rowtext b,
+.pandrero-texty .headmeta b {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -.02em;
+}
+
+.pandrero-texty .rowtext p,
+.pandrero-texty .rowmeta,
+.pandrero-texty .headmeta small,
+.pandrero-texty .msg .time {
+  color: var(--slate);
+  opacity: .82;
+}
+
+.pandrero-texty .avatar {
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(191, 215, 227, .96), var(--petrol));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45);
+}
+
+.pandrero-texty .messages {
+  gap: 7px;
+  padding-inline: 2px;
+}
+
+.pandrero-texty .msg {
+  border-radius: 21px;
+  padding: 10px 13px;
+  font-size: 15px;
+  line-height: 1.38;
+  box-shadow: 0 8px 22px rgba(31, 39, 44, .06);
+}
+
+.pandrero-texty .msg.in,
+.pandrero-texty .typing,
+.pandrero-texty .day {
+  background: rgba(255, 255, 255, .78);
+  border-color: rgba(31, 39, 44, .07);
+}
+
+.pandrero-texty .msg.out,
+.pandrero-texty .send,
+.pandrero-texty .mic,
+.pandrero-texty .primary,
+.pandrero-texty .tabs button.active {
+  background: linear-gradient(145deg, var(--petrol), #385764);
+}
+
+.pandrero-texty .composer input {
+  background: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(31, 39, 44, .08);
+}
+
+/* VYBE — premium editorial lifestyle feed. */
+.pandrero-vybe .app {
+  padding-inline: 18px;
+}
+
+.pandrero-vybe .topbar,
+.pandrero-vybe .card,
+.pandrero-vybe .bottom-nav,
+.pandrero-vybe .panel-card {
+  background: linear-gradient(145deg, rgba(244, 239, 230, .60), rgba(255, 255, 255, .30));
+  border-color: rgba(255, 255, 255, .48);
+  box-shadow: 0 28px 68px rgba(31, 39, 44, .12), inset 0 1px 0 rgba(255, 255, 255, .58);
+}
+
+.pandrero-vybe .brand {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: .18em;
+}
+
+.pandrero-vybe .stories {
+  padding-block: 24px 22px;
+  gap: 16px;
+}
+
+.pandrero-vybe .feed {
+  gap: 28px;
+}
+
+.pandrero-vybe .card {
+  border-radius: 34px;
+}
+
+.pandrero-vybe .media img,
+.pandrero-vybe .media video {
+  filter: saturate(.92) contrast(1.03);
+}
+
+.pandrero-vybe .copy {
+  padding: 2px 18px 20px;
+  line-height: 1.52;
+}
+
+.pandrero-vybe .caption,
+.pandrero-vybe .likes {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+}
+
+/* TRAVELS — spacious premium travel magazine boards. */
+.pandrero-travels .app {
+  padding-left: clamp(22px, 5vw, 46px);
+  padding-right: clamp(22px, 5vw, 46px);
+}
+
+.pandrero-travels .topbar,
+.pandrero-travels .board,
+.pandrero-travels .modal-card {
+  background: linear-gradient(145deg, rgba(244, 239, 230, .82), rgba(255, 255, 255, .46));
+  box-shadow: 0 30px 72px rgba(31, 39, 44, .11), inset 0 1px 0 rgba(255, 255, 255, .72);
+}
+
+.pandrero-travels .brand,
+.pandrero-travels .heading h1,
+.pandrero-travels .board-title h2 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+  font-weight: 500;
+  letter-spacing: -.04em;
+}
+
+.pandrero-travels .heading {
+  margin-block: 42px 24px;
+}
+
+.pandrero-travels .heading h1 {
+  font-size: clamp(38px, 7vw, 64px);
+}
+
+.pandrero-travels .boards {
+  gap: 30px;
+}
+
+.pandrero-travels .board {
+  padding: 18px;
+  border-radius: 34px;
+}
+
+.pandrero-travels .collage {
+  gap: 10px;
+  height: 330px;
+}
+
+.pandrero-travels .collage img {
+  border-radius: 22px;
+  filter: saturate(.95) contrast(1.02);
+}
+
+/* PULSE — calm premium audio hardware interface. */
+.pandrero-pulse {
+  background-image:
+    radial-gradient(82% 56% at 50% -12%, rgba(191, 215, 227, .48) 0 30%, transparent 62%),
+    linear-gradient(180deg, #eef0eb 0%, var(--paper) 46%, #ded4c4 100%);
+}
+
+.pandrero-pulse::before {
+  opacity: .26;
+}
+
+.pandrero-pulse .top,
+.pandrero-pulse .card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, .54), rgba(244, 239, 230, .36));
+  border-color: rgba(31, 39, 44, .08);
+  box-shadow: 0 32px 78px rgba(31, 39, 44, .12), inset 0 1px 0 rgba(255, 255, 255, .72);
+}
+
+.pandrero-pulse .brand {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.pandrero-pulse .card {
+  padding: 32px 26px;
+}
+
+.pandrero-pulse .bluetooth {
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 24%, rgba(255,255,255,.42), transparent 28%), linear-gradient(145deg, var(--dust-blue), var(--petrol));
+  box-shadow: 0 26px 58px rgba(79, 116, 135, .28), inset 0 1px 0 rgba(255, 255, 255, .46);
+}
+
+.pandrero-pulse .device {
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .42);
+}
+
+.pandrero-pulse .connect {
+  border-radius: 999px;
+  box-shadow: 0 18px 36px rgba(79, 116, 135, .22);
+}
+
+/* CALLSY — cinematic, softer premium call states. */
+.pandrero-callsy .lock,
+.pandrero-callsy .incall {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(191, 215, 227, .18), transparent 30%),
+    radial-gradient(circle at 78% 36%, rgba(79, 116, 135, .20), transparent 34%),
+    linear-gradient(180deg, #121921 0%, #07090b 58%, #010202 100%);
+}
+
+.pandrero-callsy .ambient-one { background: rgba(159, 179, 189, .34); }
+.pandrero-callsy .ambient-two { background: rgba(79, 116, 135, .30); }
+
+.pandrero-callsy .avatar {
+  border-radius: 44px;
+  background: radial-gradient(circle at 34% 24%, rgba(255,255,255,.34), transparent 26%), linear-gradient(145deg, var(--dust-blue), var(--petrol));
+  box-shadow: 0 28px 68px rgba(0, 0, 0, .42), inset 0 1px 0 rgba(255, 255, 255, .38);
+}
+
+.pandrero-callsy .caller h1 {
+  font-weight: 420;
+  letter-spacing: -.04em;
+}
+
+.pandrero-callsy .call-button,
+.pandrero-callsy .control button {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255, 255, 255, .20);
+}
+
+.pandrero-callsy .rings i {
+  border-color: rgba(191, 215, 227, .24);
+  animation-duration: 3.1s;
+}
+
+/* LENSY — professional camera controls with minimal overlays. */
+.pandrero-lensy .iconbtn,
+.pandrero-lensy .flip,
+.pandrero-lensy .close {
+  background: rgba(5, 7, 8, .34);
+  border-color: rgba(244, 239, 230, .18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10);
+}
+
+.pandrero-lensy .gridlines:before,
+.pandrero-lensy .gridlines:after {
+  background: rgba(244, 239, 230, .18);
+  box-shadow: calc(33.33vw) 0 0 rgba(244, 239, 230, .18);
+}
+
+.pandrero-lensy .gridlines:after {
+  box-shadow: 0 calc(33.33vh) 0 rgba(244, 239, 230, .18);
+}
+
+.pandrero-lensy .bottom {
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .28) 26%, rgba(0, 0, 0, .72));
+}
+
+.pandrero-lensy .modes {
+  letter-spacing: .12em;
+}
+
+.pandrero-lensy .modes .active {
+  color: var(--paper);
+}
+
+.pandrero-lensy .shutter {
+  border-color: rgba(244, 239, 230, .94);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .50), 0 18px 42px rgba(0, 0, 0, .35);
+}
+
+.pandrero-lensy .permission-card {
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .32);
+}
