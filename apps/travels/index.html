@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#f7edf8">
+<meta name="theme-color" content="#F4EFE6">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Travels">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="../../core/design-tokens.css">
 <title>Travels</title>
 <style>
 :root{--pink:#ff2aa3;--violet:#8e58ff;--ink:#32152a;--muted:#8c6d80;--line:rgba(255,255,255,.72)}
@@ -34,9 +35,11 @@ button,input{font:inherit;color:inherit}
 .modal-card label{display:block;font-size:11px;color:var(--muted);margin:10px 0 5px}.modal-card input{width:100%;border:1px solid rgba(100,40,80,.10);outline:0;background:rgba(255,255,255,.65);border-radius:15px;padding:12px}
 .modal-actions{display:flex;gap:10px;margin-top:16px}.modal-actions button{flex:1;border:0;border-radius:15px;padding:12px}.cancel{background:rgba(255,255,255,.62)}.save{background:linear-gradient(145deg,var(--pink),var(--violet));color:white}
 @media(max-width:900px){.boards{grid-template-columns:1fr}}
+
 </style>
+<link rel="stylesheet" href="../../core/app-theme.css">
 </head>
-<body>
+<body class="pandrero-app pandrero-travels">
 <div class="app">
 <header class="topbar glass">
   <div class="brand">Travels<small>save places, imagine escapes</small></div>
