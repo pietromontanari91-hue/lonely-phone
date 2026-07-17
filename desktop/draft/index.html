@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Draft — Pandrero OS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="draft-shell" id="draftShell">
+    <header class="titlebar">
+      <button class="brand" id="draftLogo" aria-label="Draft"><span class="brand-mark">D</span><span>Draft</span></button>
+      <input class="document-title" id="documentTitle" aria-label="Nome documento" spellcheck="false">
+      <span class="save-state" id="saveState">Salvato sul dispositivo</span>
+      <div class="window-controls" aria-hidden="true"><span></span><span></span><span></span></div>
+    </header>
+
+    <nav class="ribbon-tabs" aria-label="Schede barra multifunzione">
+      <button class="active">File</button><button class="active-tab">Home</button><button>Inserisci</button><button>Layout</button><button>Revisione</button><button>Visualizza</button>
+    </nav>
+
+    <section class="ribbon" aria-label="Strumenti Home">
+      <div class="ribbon-group compact"><button data-command="undo">↶</button><button data-command="redo">↷</button><span>Annulla</span></div>
+      <div class="ribbon-group font-group">
+        <select id="fontFamily" aria-label="Tipo di carattere"><option value="Georgia">Georgia</option><option value="Arial">Arial</option><option value="Verdana">Verdana</option><option value="Times New Roman">Times New Roman</option></select>
+        <select id="fontSize" aria-label="Dimensione carattere"><option>11</option><option selected>12</option><option>14</option><option>16</option><option>18</option><option>24</option><option>32</option></select>
+        <span>Carattere</span>
+      </div>
+      <div class="ribbon-group"><button data-command="bold"><strong>G</strong></button><button data-command="italic"><em>C</em></button><button data-command="underline"><u>S</u></button><span>Stile</span></div>
+      <div class="ribbon-group paragraph-group"><button data-command="insertUnorderedList">• Lista</button><button data-align="left">☰</button><button data-align="center">≡</button><button data-align="right">☷</button><button id="lineSpacing">Interlinea</button><span>Paragrafo</span></div>
+    </section>
+
+    <div class="ruler"><div class="ruler-track"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span></div></div>
+
+    <main class="workspace" id="workspace">
+      <div class="page-scale" id="pageScale"><article class="page" id="page"><div class="editor" id="editor" contenteditable="true" spellcheck="true" aria-label="Documento Draft"></div></article></div>
+    </main>
+
+    <footer class="statusbar"><span id="pageCount">Pagina 1</span><span id="wordCount">0 parole</span><span id="charCount">0 caratteri</span><span>Italiano</span><label>Zoom <select id="zoomSelect"><option>80%</option><option>90%</option><option selected>100%</option><option>110%</option><option>125%</option></select></label></footer>
+  </div>
+
+  <aside class="director-panel" id="directorPanel" hidden aria-label="Pannello regia">
+    <h2>Regia Draft</h2>
+    <label>Nome file <input id="directorTitle"></label>
+    <label>Testo documento <textarea id="directorText" rows="8"></textarea></label>
+    <div class="button-row"><button id="replaceDocument">Sostituisci documento</button><button id="restoreInitial">Ripristina iniziale</button><button id="clearDocument">Svuota</button></div>
+    <label class="inline"><input type="checkbox" id="showCursor" checked> Cursore visibile</label>
+    <label>Testo da digitare automaticamente <textarea id="typingText" rows="8"></textarea></label>
+    <label>Ritardo <select id="typingDelay"><option value="0">0 secondi</option><option value="3">3 secondi</option><option value="5">5 secondi</option><option value="10">10 secondi</option><option value="15">15 secondi</option></select></label>
+    <label>Velocità <select id="typingSpeed"><option value="slow">Lenta</option><option value="normal" selected>Normale</option><option value="fast">Veloce</option></select></label>
+    <label>Modalità digitazione <select id="typingMode"><option value="replace" selected>Sostituisci il corpo mantenendo il titolo</option><option value="append">Aggiungi al documento</option></select></label>
+    <label>Posizione in modalità aggiungi <select id="appendPosition"><option value="end" selected>Fine documento</option><option value="after-title">Dopo il titolo</option><option value="current">Posizione corrente</option></select></label>
+    <p class="typing-status">Stato digitazione: <strong id="typingStatus">Pronto</strong></p>
+    <label class="inline"><input type="checkbox" id="naturalTyping" checked> Variazione naturale</label>
+    <div class="button-row"><button id="startTyping">Avvia digitazione</button><button id="stopTyping">Ferma</button><button id="completeTyping">Completa ora</button></div>
+    <div class="button-row"><button id="cleanMode">Entra in modalità ripresa pulita</button><button id="closeDirector">Chiudi</button></div>
+  </aside>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
