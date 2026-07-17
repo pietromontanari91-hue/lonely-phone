@@ -405,30 +405,6 @@
   padding-left: 14px;
   padding-right: 14px;
 }
-
-.pandrero-texty #chatScreen {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
-}
-
-.pandrero-texty #chatScreen.active {
-  display: flex;
-  flex-direction: column;
-}
-
-.pandrero-texty .chathead,
-.pandrero-texty .composer {
-  flex-shrink: 0;
-}
-
-.pandrero-texty .messages {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-}
-
 .pandrero-texty .top,
 .pandrero-texty .chathead,
 .pandrero-texty .search,
