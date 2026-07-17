@@ -1,3 +1,5 @@
+import { IMAGE_ASSETS, VIDEO_ASSETS, resolveMediaPath } from "../../core/media-catalog.js";
+import { createMediaPicker } from "../../core/media-picker.js";
 const VYBE_STORAGE_KEY = "vybePosts";
 const cloneData = (value) => JSON.parse(JSON.stringify(value));
 const people = cloneData(VYBE_CONTENT.stories);
@@ -8,6 +10,10 @@ const toastEl = document.getElementById("toast");
 const storyView = document.getElementById("storyView");
 const storyImage = document.getElementById("storyImage");
 
+function mediaUrl(path){
+  return resolveMediaPath(path);
+}
+
 function formatNumber(value){
   return value.toLocaleString("it-IT");
 }
@@ -16,7 +22,7 @@ function renderStories(){
   storiesEl.innerHTML = people.map(person => `
     <button class="story" data-image="${person.image}" aria-label="Apri storia di ${person.user}">
       <div class="story-ring">
-        <div class="avatar" style="background-image:url('${person.image}')"></div>
+        <div class="avatar" style="background-image:url('${mediaUrl(person.image)}')"></div>
       </div>
       <span>${person.user}</span>
     </button>
@@ -31,7 +37,7 @@ function renderFeed(){
   feedEl.innerHTML = posts.map((post,index) => `
     <article class="card glass">
       <div class="card-head">
-        <div class="avatar" style="background-image:url('${post.image}')"></div>
+        <div class="avatar" style="background-image:url('${mediaUrl(post.image)}')"></div>
         <div class="meta">
           <b>${post.user}</b>
           <small>${post.place}</small>
@@ -41,10 +47,10 @@ function renderFeed(){
 
       <div class="media">
         ${post.video
-          ? `<video muted loop playsinline autoplay preload="metadata" poster="${post.poster}">
-              <source src="${post.video}" type="video/mp4">
+          ? `<video muted loop playsinline autoplay preload="metadata" poster="${mediaUrl(post.poster || post.image)}">
+              <source src="${mediaUrl(post.video)}" type="video/mp4">
             </video>`
-          : `<img src="${post.image}" alt="">`}
+          : `<img src="${mediaUrl(post.image)}" alt="">`}
         <div class="location">${post.place}</div>
         <div class="heart-burst">♥</div>
       </div>
@@ -86,7 +92,7 @@ function showToast(){
 }
 
 function openStory(image){
-  storyImage.src = image;
+  storyImage.src = mediaUrl(image);
   storyView.classList.add("open");
   setTimeout(closeStory,5000);
 }
@@ -115,6 +121,8 @@ document.addEventListener("click",event => {
 
 
 const postPanel = document.getElementById("postPanel");
+const imagePicker = createMediaPicker({ container: document.getElementById("postImagePicker"), assets: IMAGE_ASSETS, title: "Scegli Immagine o poster", onChange: ({ path }) => { document.getElementById("postImage").value = path; } });
+const videoPicker = createMediaPicker({ container: document.getElementById("postVideoPicker"), assets: VIDEO_ASSETS, optional: true, type: "video", title: "Scegli Video", onChange: ({ path }) => { document.getElementById("postVideo").value = path; } });
 document.getElementById("createPostBtn").onclick = () => postPanel.classList.add("open");
 document.getElementById("closePostPanel").onclick = () => postPanel.classList.remove("open");
 document.getElementById("resetPostsBtn").onclick = () => {
@@ -126,13 +134,17 @@ document.getElementById("resetPostsBtn").onclick = () => {
 };
 document.getElementById("postForm").onsubmit = (event) => {
   event.preventDefault();
-  const image = document.getElementById("postImage").value.trim();
-  const video = document.getElementById("postVideo").value.trim();
+  const manualImage = document.getElementById("postImage").value.trim();
+  const manualVideo = document.getElementById("postVideo").value.trim();
+  const image = manualImage || imagePicker.value;
+  const video = manualVideo || videoPicker.value;
+  const pickedVideo = VIDEO_ASSETS.find(asset => asset.path === video);
+  if(!image) return;
   posts.unshift({
     user: document.getElementById("postUser").value.trim() || "nuovo.user",
     place: document.getElementById("postPlace").value.trim() || "Nuovo luogo",
     image,
-    poster: image,
+    poster: pickedVideo?.poster || image,
     video: video || undefined,
     caption: document.getElementById("postCaption").value.trim() || "Nuovo post",
     likes: Number(document.getElementById("postLikes").value) || 0
@@ -141,6 +153,8 @@ document.getElementById("postForm").onsubmit = (event) => {
   renderFeed();
   observeVideos();
   event.target.reset();
+  imagePicker.setValue("");
+  videoPicker.setValue("");
   postPanel.classList.remove("open");
 };
 

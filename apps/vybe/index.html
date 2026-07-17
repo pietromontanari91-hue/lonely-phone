@@ -307,7 +307,7 @@ button{font:inherit;color:inherit}
   font-size:22px;
 }
 
-.director-panel{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;background:rgba(18,0,12,.62);padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 18px)}.director-panel.open{display:flex}.director-card{width:min(460px,100%);max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-radius:28px;padding:18px}.director-card h2{margin:0 0 12px}.director-card label{display:block;font-size:11px;opacity:.78;margin:9px 0 5px}.director-card input{width:100%;border:1px solid rgba(255,255,255,.18);outline:0;background:rgba(255,255,255,.10);border-radius:14px;padding:11px}.director-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}.director-actions button{flex:1 1 130px;border:0;border-radius:14px;padding:11px}.director-actions .secondary{background:rgba(255,255,255,.12)}.director-actions .primary{background:linear-gradient(145deg,#ff36aa,#945cff)}
+.director-panel{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;background:rgba(18,0,12,.62);padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 18px)}.director-panel.open{display:flex}.director-card{width:min(460px,100%);max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-radius:28px;padding:18px}.director-card h2{margin:0 0 12px}.director-card label{display:block;font-size:11px;opacity:.78;margin:9px 0 5px}.director-card input{width:100%;border:1px solid rgba(255,255,255,.18);outline:0;background:rgba(255,255,255,.10);border-radius:14px;padding:11px}.director-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}.director-actions button{flex:1 1 130px;border:0;border-radius:14px;padding:11px}.director-actions .secondary{background:rgba(255,255,255,.12)}.director-actions .primary{background:linear-gradient(145deg,#ff36aa,#945cff)}.manual-paths{margin-top:10px}.manual-paths summary{cursor:pointer;font-size:12px;opacity:.78}
 
 </style>
 <link rel="stylesheet" href="../../core/app-theme.css">
@@ -348,8 +348,12 @@ button{font:inherit;color:inherit}
     <h2>Nuovo post VYBE</h2>
     <label>Username</label><input id="postUser" required>
     <label>Luogo</label><input id="postPlace" required>
-    <label>Immagine o poster</label><input id="postImage" placeholder="assets/images/nuova.webp" required>
-    <label>Video (opzionale)</label><input id="postVideo" placeholder="assets/videos/nuovo.mp4">
+    <label>Immagine o poster</label><div id="postImagePicker"></div>
+    <label>Video (opzionale)</label><div id="postVideoPicker"></div>
+    <details class="manual-paths"><summary>Percorso manuale</summary>
+      <label>Immagine o poster manuale</label><input id="postImage" placeholder="assets/images/nuova.webp">
+      <label>Video manuale (opzionale)</label><input id="postVideo" placeholder="assets/videos/nuovo.mp4">
+    </details>
     <label>Caption</label><input id="postCaption" required>
     <label>Like iniziali</label><input id="postLikes" type="number" min="0" value="0">
     <div class="director-actions">
@@ -361,6 +365,6 @@ button{font:inherit;color:inherit}
 </div>
 
 <script src="content.js"></script>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
