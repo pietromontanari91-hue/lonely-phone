@@ -1,31 +1,14 @@
 import { readJSON, writeJSON } from "../../core/storage.js";
 import { INBOX_STORAGE_KEY, interlineeEmail, removeUndeliveredInterlineeSeed, scheduleEmailDelivery } from "../../core/emailScheduler.js";
 import { INBOX_EMAILS_CHANGED_EVENT, startSchedulerRunner } from "../../core/schedulerRunner.js";
+import { INBOX_STARTER_EMAILS } from "./content.js";
 
 const $ = (id) => document.getElementById(id);
 const STORAGE_KEY = INBOX_STORAGE_KEY;
 let currentEmailId = null;
 
-const starterEmails = [
-  {
-    id: "pandrero-note",
-    sender: "Pandrero Desk",
-    subject: "Nota editoriale",
-    preview: "La palette neutra è pronta: paper, dust blue, slate e charcoal.",
-    time: "09:12",
-    read: false,
-    bodyHtml: "<p>Abbiamo preparato un linguaggio visivo più quieto e narrativo per Pandrero OS: superfici paper, accenti dust blue, testo slate e profondità charcoal.</p>"
-  },
-  {
-    id: "martina-appunti",
-    sender: "Martina",
-    subject: "Appunti per stasera",
-    preview: "Ho segnato due luoghi piccoli, entrambi con tavoli vicino alla finestra.",
-    time: "08:47",
-    read: true,
-    bodyHtml: "<p>Ho segnato due luoghi piccoli, entrambi con tavoli vicino alla finestra. Scegli tu quale sembra meno rumoroso.</p>"
-  }
-];
+const cloneData = (value) => JSON.parse(JSON.stringify(value));
+const starterEmails = cloneData(INBOX_STARTER_EMAILS);
 
 removeUndeliveredInterlineeSeed();
 let emails = normalizeEmails(readJSON(STORAGE_KEY, starterEmails));
@@ -35,12 +18,16 @@ function normalizeEmails(items) {
     ...email,
     id: email.id || `mail-${index}-${Date.now()}`,
     read: Boolean(email.read),
-    bodyHtml: email.bodyHtml || `<p>${escapeHTML(email.preview || "")}</p>`
+    bodyHtml: email.bodyHtml || paragraphsToHtml(email.bodyParagraphs || [email.preview || ""])
   }));
 }
 
 function escapeHTML(value) {
-  return String(value).replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+  return String(value).replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+}
+
+function paragraphsToHtml(paragraphs) {
+  return paragraphs.map((paragraph) => `<p>${escapeHTML(paragraph)}</p>`).join("");
 }
 
 function filteredEmails() {
@@ -90,15 +77,16 @@ function openEmail(id) {
 
 function buildEmailFromForm() {
   const preview = $("preview").value.trim() || "Nuova email programmata.";
-  return {
+  const bodyParagraphs = $("composeBody").value.split(/\n+/).map((line) => line.trim()).filter(Boolean);
+  return normalizeEmails([{
     id: crypto.randomUUID(),
     sender: $("sender").value.trim() || "Senza mittente",
     subject: $("subject").value.trim() || "Senza oggetto",
     preview,
-    time: "ora",
-    read: false,
-    bodyHtml: `<p>${escapeHTML(preview)}</p>`
-  };
+    time: $("composeTime").value.trim() || "ora",
+    read: $("composeRead").value === "true",
+    bodyParagraphs: bodyParagraphs.length ? bodyParagraphs : [preview]
+  }])[0];
 }
 
 function scheduleEmail(email, seconds) {
@@ -107,6 +95,7 @@ function scheduleEmail(email, seconds) {
 }
 
 $("directorOpen").onclick = () => $("directorPanel").classList.add("open");
+$("composeOpen").onclick = () => $("directorPanel").classList.add("open");
 $("directorClose").onclick = () => $("directorPanel").classList.remove("open");
 $("directorForm").onsubmit = (event) => {
   event.preventDefault();
@@ -114,6 +103,18 @@ $("directorForm").onsubmit = (event) => {
   const seconds = Number($("delay").value);
   $("directorPanel").classList.remove("open");
   scheduleEmail(email, seconds);
+};
+$("addEmailNow").onclick = () => {
+  const email = buildEmailFromForm();
+  emails.unshift(email);
+  renderEmails(new Set([email.id]));
+  $("directorPanel").classList.remove("open");
+};
+$("resetInboxContent").onclick = () => {
+  emails = normalizeEmails(cloneData(INBOX_STARTER_EMAILS));
+  writeJSON(STORAGE_KEY, emails);
+  renderEmails(new Set(), false);
+  showList();
 };
 $("scheduleInterlinee").onclick = () => {
   const seconds = Number($("delay").value);

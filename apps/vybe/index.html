@@ -307,6 +307,8 @@ button{font:inherit;color:inherit}
   font-size:22px;
 }
 
+.director-panel{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;background:rgba(18,0,12,.62);padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 18px)}.director-panel.open{display:flex}.director-card{width:min(460px,100%);max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-radius:28px;padding:18px}.director-card h2{margin:0 0 12px}.director-card label{display:block;font-size:11px;opacity:.78;margin:9px 0 5px}.director-card input{width:100%;border:1px solid rgba(255,255,255,.18);outline:0;background:rgba(255,255,255,.10);border-radius:14px;padding:11px}.director-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}.director-actions button{flex:1 1 130px;border:0;border-radius:14px;padding:11px}.director-actions .secondary{background:rgba(255,255,255,.12)}.director-actions .primary{background:linear-gradient(145deg,#ff36aa,#945cff)}
+
 </style>
 <link rel="stylesheet" href="../../core/app-theme.css">
 </head>
@@ -326,7 +328,7 @@ button{font:inherit;color:inherit}
 <nav class="bottom-nav glass">
   <button class="active" aria-label="Home">⌂</button>
   <button aria-label="Cerca">⌕</button>
-  <button aria-label="Crea">＋</button>
+  <button id="createPostBtn" aria-label="Crea">＋</button>
   <button aria-label="Attività">♡</button>
   <button aria-label="Profilo">◎</button>
 </nav>
@@ -340,162 +342,25 @@ button{font:inherit;color:inherit}
   <button class="story-close" id="storyClose">×</button>
 </div>
 
-<script>
-const people = [
-  { user:"martina.ss", image:"assets/images/01_positano.webp" },
-  { user:"giuliabln", image:"assets/images/02_couple_trip.webp" },
-  { user:"vale.sc", image:"assets/images/03_girls_dinner.webp" },
-  { user:"sofiatravels", image:"assets/images/04_rooftop_aperitivo.webp" },
-  { user:"chiara.dee", image:"assets/images/06_airport.webp" },
-  { user:"aleeteo", image:"assets/images/10_roadtrip.webp" }
-];
 
-const posts = [
-  {user:"martina.ss",place:"Positano, Italia",image:"assets/images/01_positano.webp",caption:"Giorni che sanno d'estate ☀️",likes:845},
-  {user:"giuliabln",place:"Mykonos, Grecia",image:"assets/images/02_couple_trip.webp",caption:"you, me & sunsets 🤍",likes:1287},
-  {user:"saraferrari",place:"Neon Room, Milano",video:"assets/videos/concerto_vybe.mp4",poster:"assets/images/concerto.webp",caption:"last night was a blur ✨",likes:1482},
-  {user:"vale.sc",place:"Roma, Italia",image:"assets/images/03_girls_dinner.webp",caption:"Le mie persone preferite ✨",likes:963},
-  {user:"sofiatravels",place:"Firenze, Italia",image:"assets/images/04_rooftop_aperitivo.webp",caption:"Golden hour aperitivo 🥂",likes:714},
-  {user:"chiara.dee",place:"Milano Malpensa",image:"assets/images/06_airport.webp",caption:"Next destination ✈️",likes:1104},
-  {user:"aleeteo",place:"Costa Amalfitana",image:"assets/images/10_roadtrip.webp",caption:"No plans, just roads 🚗",likes:688}
-];
+<div class="director-panel" id="postPanel">
+  <form class="director-card glass" id="postForm">
+    <h2>Nuovo post VYBE</h2>
+    <label>Username</label><input id="postUser" required>
+    <label>Luogo</label><input id="postPlace" required>
+    <label>Immagine o poster</label><input id="postImage" placeholder="assets/images/nuova.webp" required>
+    <label>Video (opzionale)</label><input id="postVideo" placeholder="assets/videos/nuovo.mp4">
+    <label>Caption</label><input id="postCaption" required>
+    <label>Like iniziali</label><input id="postLikes" type="number" min="0" value="0">
+    <div class="director-actions">
+      <button type="button" class="secondary" id="resetPostsBtn">Ripristina contenuti iniziali</button>
+      <button type="button" class="secondary" id="closePostPanel">Annulla</button>
+      <button type="submit" class="primary">Aggiungi</button>
+    </div>
+  </form>
+</div>
 
-const storiesEl = document.getElementById("stories");
-const feedEl = document.getElementById("feed");
-const toastEl = document.getElementById("toast");
-const storyView = document.getElementById("storyView");
-const storyImage = document.getElementById("storyImage");
-
-function formatNumber(value){
-  return value.toLocaleString("it-IT");
-}
-
-function renderStories(){
-  storiesEl.innerHTML = people.map(person => `
-    <button class="story" data-image="${person.image}" aria-label="Apri storia di ${person.user}">
-      <div class="story-ring">
-        <div class="avatar" style="background-image:url('${person.image}')"></div>
-      </div>
-      <span>${person.user}</span>
-    </button>
-  `).join("");
-}
-
-function renderFeed(){
-  feedEl.innerHTML = posts.map((post,index) => `
-    <article class="card glass">
-      <div class="card-head">
-        <div class="avatar" style="background-image:url('${post.image}')"></div>
-        <div class="meta">
-          <b>${post.user}</b>
-          <small>${post.place}</small>
-        </div>
-        <span>•••</span>
-      </div>
-
-      <div class="media">
-        ${post.video
-          ? `<video muted loop playsinline autoplay preload="metadata" poster="${post.poster}">
-              <source src="${post.video}" type="video/mp4">
-            </video>`
-          : `<img src="${post.image}" alt="">`}
-        <div class="location">${post.place}</div>
-        <div class="heart-burst">♥</div>
-      </div>
-
-      <div class="actions">
-        <button class="action like" aria-label="Mi piace">♡</button>
-        <button class="action" aria-label="Commenta">◯</button>
-        <button class="action" aria-label="Condividi">↗</button>
-        <button class="action save" aria-label="Salva">⌑</button>
-      </div>
-
-      <div class="copy">
-        <div class="likes">${formatNumber(post.likes)} Mi piace</div>
-        <div class="caption"><b>${post.user}</b>${post.caption}</div>
-        <div class="comments">Visualizza tutti i ${18 + index * 7} commenti</div>
-      </div>
-    </article>
-  `).join("");
-}
-
-function toggleLike(card, forceLike = false){
-  const button = card.querySelector(".like");
-  const counter = card.querySelector(".likes");
-  const isLiked = button.classList.contains("liked");
-
-  if(forceLike && isLiked) return;
-
-  const current = parseInt(counter.textContent.replace(/\D/g,""),10);
-  button.classList.toggle("liked");
-  button.textContent = button.classList.contains("liked") ? "♥" : "♡";
-  counter.textContent =
-    formatNumber(button.classList.contains("liked") ? current + 1 : current - 1)
-    + " Mi piace";
-}
-
-function showToast(){
-  toastEl.classList.add("show");
-  setTimeout(() => toastEl.classList.remove("show"),1200);
-}
-
-function openStory(image){
-  storyImage.src = image;
-  storyView.classList.add("open");
-  setTimeout(closeStory,5000);
-}
-
-function closeStory(){
-  storyView.classList.remove("open");
-}
-
-document.addEventListener("click",event => {
-  const like = event.target.closest(".like");
-  if(like) toggleLike(like.closest(".card"));
-
-  const save = event.target.closest(".save");
-  if(save){
-    save.textContent = save.textContent === "⌑" ? "▣" : "⌑";
-    showToast();
-  }
-
-  const story = event.target.closest(".story");
-  if(story) openStory(story.dataset.image);
-
-  if(event.target.id === "storyClose" || event.target.id === "storyView"){
-    closeStory();
-  }
-});
-
-let lastTap = 0;
-document.addEventListener("pointerup",event => {
-  const media = event.target.closest(".media");
-  if(!media) return;
-
-  const now = Date.now();
-  if(now - lastTap < 330){
-    const card = media.closest(".card");
-    toggleLike(card,true);
-
-    const heart = media.querySelector(".heart-burst");
-    heart.classList.remove("show");
-    void heart.offsetWidth;
-    heart.classList.add("show");
-  }
-  lastTap = now;
-});
-
-renderStories();
-renderFeed();
-
-const observer=new IntersectionObserver(entries=>{
- entries.forEach(e=>{
-   const v=e.target;
-   if(e.isIntersecting){v.play().catch(()=>{});}else{v.pause();}
- });
-},{threshold:.6});
-document.querySelectorAll("video").forEach(v=>observer.observe(v));
-
-</script>
+<script src="content.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

@@ -30,8 +30,8 @@ button,input{font:inherit;color:inherit}
 .collage{display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:1fr 1fr;gap:8px;height:300px}
 .collage img{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}.collage img:first-child{grid-row:1/3}
 .count{display:inline-block;margin-top:11px;font-size:11px;color:var(--muted)}
-.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(36,8,28,.28);padding:24px}.modal.open{display:flex}
-.modal-card{width:min(460px,100%);padding:20px;border-radius:28px}.modal-card h3{margin:0 0 14px}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(36,8,28,.28);padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 18px)}.modal.open{display:flex}
+.modal-card{width:min(460px,100%);max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:20px;border-radius:28px}.modal-card h3{margin:0 0 14px}
 .modal-card label{display:block;font-size:11px;color:var(--muted);margin:10px 0 5px}.modal-card input{width:100%;border:1px solid rgba(100,40,80,.10);outline:0;background:rgba(255,255,255,.65);border-radius:15px;padding:12px}
 .modal-actions{display:flex;gap:10px;margin-top:16px}.modal-actions button{flex:1;border:0;border-radius:15px;padding:12px}.cancel{background:rgba(255,255,255,.62)}.save{background:linear-gradient(145deg,var(--pink),var(--violet));color:white}
 @media(max-width:900px){.boards{grid-template-columns:1fr}}
@@ -44,7 +44,6 @@ button,input{font:inherit;color:inherit}
 <header class="topbar glass">
   <div class="brand">Travels<small>save places, imagine escapes</small></div>
   <div class="search">⌕ <input id="searchInput" placeholder="Cerca una destinazione"></div>
-  <button class="edit" id="editMode">Modifica titoli</button>
 </header>
 
 <section class="heading">
@@ -53,6 +52,21 @@ button,input{font:inherit;color:inherit}
 </section>
 
 <main class="boards" id="boards"></main>
+</div>
+
+
+<div class="modal" id="travelsDirectorPanel">
+  <div class="modal-card glass">
+    <h3>Regia Travels</h3>
+    <div class="modal-actions">
+      <button class="save" id="newBoardBtn">Nuova board</button>
+      <button class="save" id="editMode">Modifica titoli</button>
+    </div>
+    <div class="modal-actions">
+      <button class="cancel" id="resetBoardsBtn">Ripristina contenuti iniziali</button>
+      <button class="cancel" id="closeDirectorBtn">Chiudi</button>
+    </div>
+  </div>
 </div>
 
 <div class="modal" id="modal">
@@ -69,53 +83,23 @@ button,input{font:inherit;color:inherit}
   </div>
 </div>
 
-<script>
-const defaults=[{"id": "santorini", "title": "Santorini", "subtitle": "Oia, tramonti e terrazze bianche", "images": ["santorini_01.webp", "santorini_02.webp", "santorini_03.webp"]}, {"id": "mykonos", "title": "Mykonos", "subtitle": "mare, mulini e Little Venice", "images": ["mykonos_01.webp", "mykonos_02.webp", "mykonos_03.webp"]}, {"id": "lisbon", "title": "Lisbona", "subtitle": "tram, salite e quartieri storici", "images": ["lisbon_01.webp", "lisbon_02.webp", "lisbon_03.webp"]}, {"id": "brighton", "title": "Brighton", "subtitle": "molo, mare e atmosfera inglese", "images": ["brighton_01.webp", "brighton_02.webp", "brighton_03.webp"]}];
-let boards=JSON.parse(localStorage.getItem("travelsBoardsReal")||"null")||defaults;
-let editing=false,currentId=null;
 
-function save(){localStorage.setItem("travelsBoardsReal",JSON.stringify(boards))}
-function render(filter=""){
-  document.getElementById("boards").innerHTML=boards
-    .filter(b=>(b.title+" "+b.subtitle).toLowerCase().includes(filter.toLowerCase()))
-    .map(b=>`
-      <article class="board glass">
-        <div class="board-title">
-          <div><h2>${b.title}</h2><p>${b.subtitle}</p></div>
-          ${editing?`<button data-edit="${b.id}">✎</button>`:""}
-        </div>
-        <div class="collage">
-          ${b.images.map(img=>`<img src="assets/images/${img}" alt="">`).join("")}
-        </div>
-        <span class="count">3 idee salvate</span>
-      </article>
-    `).join("");
-}
+<div class="modal" id="newBoardModal">
+  <form class="modal-card glass" id="newBoardForm">
+    <h3>Nuova board</h3>
+    <label>Titolo</label><input id="newBoardTitle" required>
+    <label>Sottotitolo</label><input id="newBoardSubtitle" required>
+    <label>Immagine 1</label><input id="newBoardImage1" placeholder="santorini_01.webp" required>
+    <label>Immagine 2</label><input id="newBoardImage2" placeholder="santorini_02.webp" required>
+    <label>Immagine 3</label><input id="newBoardImage3" placeholder="santorini_03.webp" required>
+    <div class="modal-actions">
+      <button type="button" class="cancel" id="cancelNewBoardBtn">Annulla</button>
+      <button class="save" type="submit">Crea board</button>
+    </div>
+  </form>
+</div>
 
-document.getElementById("editMode").onclick=()=>{
-  editing=!editing;
-  document.getElementById("editMode").textContent=editing?"Fine":"Modifica titoli";
-  render(document.getElementById("searchInput").value);
-};
-document.getElementById("searchInput").addEventListener("input",e=>render(e.target.value));
-document.addEventListener("click",e=>{
-  const btn=e.target.closest("[data-edit]");
-  if(!btn)return;
-  currentId=btn.dataset.edit;
-  const board=boards.find(b=>b.id===currentId);
-  document.getElementById("titleInput").value=board.title;
-  document.getElementById("subtitleInput").value=board.subtitle;
-  document.getElementById("modal").classList.add("open");
-});
-document.getElementById("cancelBtn").onclick=()=>document.getElementById("modal").classList.remove("open");
-document.getElementById("saveBtn").onclick=()=>{
-  const board=boards.find(b=>b.id===currentId);
-  board.title=document.getElementById("titleInput").value.trim()||board.title;
-  board.subtitle=document.getElementById("subtitleInput").value.trim()||board.subtitle;
-  save();render(document.getElementById("searchInput").value);
-  document.getElementById("modal").classList.remove("open");
-};
-render();
-</script>
+<script src="content.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
