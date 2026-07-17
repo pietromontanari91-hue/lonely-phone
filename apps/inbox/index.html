@@ -38,6 +38,7 @@
 
     <section class="tools" aria-label="Strumenti Inbox">
       <label class="search-label">Cerca<input id="searchInput" type="search" placeholder="Mittente, oggetto o anteprima"></label>
+      <button class="secondary-button" id="composeOpen">Componi</button>
       <button class="secondary-button" id="markAllRead">Segna tutto come letto</button>
     </section>
 
@@ -72,8 +73,13 @@
     <label>Mittente<input id="sender" value="Interlinee Mag"></label>
     <label>Oggetto<input id="subject" value="Il nuovo numero è in edicola"></label>
     <label>Anteprima<textarea id="preview" rows="3">Soli in città... o quasi — il nuovo numero editoriale di Interlinee Mag.</textarea></label>
+    <label>Orario<input id="composeTime" value="ora"></label>
+    <label>Stato<select id="composeRead"><option value="false" selected>Non letta</option><option value="true">Letta</option></select></label>
+    <label>Paragrafi corpo<textarea id="composeBody" rows="4">Soli in città... o quasi — il nuovo numero editoriale di Interlinee Mag.</textarea></label>
     <label>Ritardo<select id="delay"><option value="3">3 secondi</option><option value="5" selected>5 secondi</option><option value="10">10 secondi</option><option value="30">30 secondi</option></select></label>
     <button class="editorial-button" type="submit">Programma email</button>
+    <button class="secondary-button" type="button" id="addEmailNow">Aggiungi ora</button>
+    <button class="secondary-button" type="button" id="resetInboxContent">Ripristina contenuti iniziali</button>
     <output id="scheduleStatus">Nessuna email programmata</output>
   </form>
 </section>
