@@ -71,6 +71,12 @@ button,input,textarea,select{font:inherit;color:inherit}
 
 </style>
 <link rel="stylesheet" href="../../core/app-theme.css">
+<style>
+/* Texty chat layout: keep the visible screen at viewport height so messages scroll above the composer. */
+.pandrero-texty .app > #chatScreen.screen{position:absolute;inset:0;min-height:0}
+.pandrero-texty #chatScreen > .messages{flex:1 1 auto;min-height:0;overflow-y:auto}
+.pandrero-texty #chatScreen > .composer{flex:0 0 auto}
+</style>
 </head>
 <body class="pandrero-app pandrero-texty">
 <div class="app">
