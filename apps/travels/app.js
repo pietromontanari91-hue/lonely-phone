@@ -1,11 +1,27 @@
+import { IMAGE_ASSETS, resolveMediaPath } from "../../core/media-catalog.js";
+import { createMediaPicker } from "../../core/media-picker.js";
 const STORAGE_KEY = "travelsBoardsReal";
 const cloneData = (value) => JSON.parse(JSON.stringify(value));
 const defaults=cloneData(TRAVELS_BOARDS);
 let boards=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null")||cloneData(defaults);
 let editing=false,currentId=null;
+const boardPickers=[1,2,3].map(number => createMediaPicker({
+  container: document.getElementById(`newBoardImagePicker${number}`),
+  assets: IMAGE_ASSETS,
+  title: `Scegli Immagine ${number}`,
+  onChange: ({ path }) => { document.getElementById(`newBoardImage${number}`).value = path; validateNewBoardImages(); }
+}));
+function validateNewBoardImages(){
+  const message=document.getElementById("newBoardValidation");
+  if(!message) return true;
+  const images=["newBoardImage1","newBoardImage2","newBoardImage3"].map(id=>document.getElementById(id).value.trim()).filter(Boolean);
+  if(images.length!==3){ message.textContent=images.length ? "Seleziona esattamente tre immagini." : ""; return false; }
+  if(new Set(images).size!==images.length){ message.textContent="Ogni slot deve usare un’immagine diversa."; return false; }
+  message.textContent=""; return true;
+}
 
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(boards))}
-function imagePath(img){return img.includes("/") ? img : `assets/images/${img}`}
+function imagePath(img){return resolveMediaPath(img && img.includes("/") ? img : `assets/images/${img}`)}
 function render(filter=""){
   document.getElementById("boards").innerHTML=boards
     .filter(b=>(b.title+" "+b.subtitle).toLowerCase().includes(filter.toLowerCase()))
@@ -37,11 +53,13 @@ document.getElementById("newBoardForm").onsubmit=(event)=>{
   const title=document.getElementById("newBoardTitle").value.trim();
   const subtitle=document.getElementById("newBoardSubtitle").value.trim();
   const images=["newBoardImage1","newBoardImage2","newBoardImage3"].map(id=>document.getElementById(id).value.trim()).filter(Boolean);
-  if(!title || images.length!==3)return;
+  if(!title || !validateNewBoardImages())return;
   boards.unshift({id:`board-${Date.now()}`,title,subtitle,images});
   save();
   render(document.getElementById("searchInput").value);
   event.target.reset();
+  boardPickers.forEach(picker=>picker.setValue(""));
+  validateNewBoardImages();
   document.getElementById("newBoardModal").classList.remove("open");
 };
 
