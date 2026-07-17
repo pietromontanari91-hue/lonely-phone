@@ -177,6 +177,10 @@
   display: none;
 }
 
+.pandrero-callsy .app > .screen {
+  position: absolute;
+}
+
 .pandrero-callsy .panel-card {
   background: linear-gradient(135deg, rgba(244, 239, 230, .82), rgba(191, 215, 227, .54));
   border: 1px solid rgba(255, 255, 255, .52);
