@@ -482,7 +482,8 @@
 
 /* VYBE — premium editorial lifestyle feed. */
 .pandrero-vybe .app {
-  padding-inline: 18px;
+  padding-left: 18px;
+  padding-right: 18px;
 }
 
 .pandrero-vybe .topbar,
@@ -502,12 +503,13 @@
 }
 
 .pandrero-vybe .stories {
-  padding-block: 24px 22px;
-  gap: 16px;
+  gap: 14px;
+  padding-block: 2px 4px;
 }
 
 .pandrero-vybe .feed {
   gap: 28px;
+  margin-top: 0;
 }
 
 .pandrero-vybe .card {
