@@ -13,12 +13,12 @@ export const interlineeEmail = {
   time: "ora",
   read: false,
   bodyHtml: `
-    <div class="newsletter-cover" role="img" aria-label="Placeholder immagine copertina magazine Interlinee Mag">
-      <span>Interlinee Mag / Cover placeholder</span>
-      <strong>Soli in città... o quasi</strong>
-    </div>
-    <p class="newsletter-deck">Il nuovo numero è in edicola: una passeggiata editoriale tra camere illuminate, tram in ritardo e piccole strategie per sentirsi meno soli.</p>
-    <h2>Soli in città... o quasi</h2>
+    <figure class="newsletter-cover">
+      <img src="../../assets/images/interlinee-mag-agosto-2026.webp" alt="Copertina di Interlinee Magazine agosto 2026, Soli o quasi">
+    </figure>
+    <p class="newsletter-deck">Il nuovo numero di Interlinee è in edicola.</p>
+    <h2>Soli… o quasi?</h2>
+    <p>Quando la città rallenta, impariamo a guardarla davvero.</p>
     <p>Questo numero di <strong>Interlinee Mag</strong> osserva la solitudine urbana senza drammatizzarla: la tratta come un materiale, una luce laterale, un rumore di fondo che a volte diventa compagnia.</p>
     <p>Dentro trovi un itinerario lento tra bar ancora vuoti, cinema di quartiere, portoni aperti per sbaglio e messaggi vocali ascoltati due volte prima di rispondere.</p>
     <p class="pullquote">La città non cura la solitudine: le dà una scenografia abbastanza grande da renderla abitabile.</p>
