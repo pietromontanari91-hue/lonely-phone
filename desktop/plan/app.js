@@ -1,13 +1,11 @@
 const KEY = "planCalendarData";
 const IT = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 const WD = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
+const $ = (id) => document.getElementById(id);
+const clone = (obj) => JSON.parse(JSON.stringify(obj));
 let state = load();
 let logoClicks = [];
 let selectedEvent = null;
-
-const $ = (id) => document.getElementById(id);
-const clone = (obj) => JSON.parse(JSON.stringify(obj));
-
 function localIsoDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
