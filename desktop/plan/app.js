@@ -6,6 +6,7 @@ const clone = (obj) => JSON.parse(JSON.stringify(obj));
 let state = load();
 let logoClicks = [];
 let selectedEvent = null;
+
 function localIsoDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -321,6 +322,13 @@ function bind() {
   $("miniNext").onclick = () => { state.currentDate = localIsoDate(addMonths(d(state.currentDate), 1)); render(); };
   $("closeModal").onclick = () => $("eventModal").classList.add("hidden");
   $("saveQuickEdit").onclick = () => { const event = state.events.find((item) => item.id === selectedEvent); if (event) { event.title = $("quickTitle").value; render(); openModal(event.id); } };
+  $("deleteModalEvent").onclick = () => {
+    if (!selectedEvent) return;
+    state.events = state.events.filter((event) => event.id !== selectedEvent);
+    selectedEvent = null;
+    $("eventModal").classList.add("hidden");
+    render();
+  };
   $("logoButton").onclick = () => { const now = Date.now(); logoClicks = logoClicks.filter((time) => now - time < 1200); logoClicks.push(now); if (logoClicks.length >= 4) { fillDirector(); $("directorPanel").classList.remove("hidden"); logoClicks = []; } };
   $("closeDirector").onclick = () => $("directorPanel").classList.add("hidden");
   $("eventSelect").onchange = (event) => loadForm(event.target.value);

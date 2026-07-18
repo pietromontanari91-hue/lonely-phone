@@ -1,5 +1,5 @@
 window.PLAN_INITIAL_DATA = {
-  currentDate: "2026-08-01",
+  currentDate: "2026-08-03",
   currentView: "month",
   categories: [
     { id: "lavoro", name: "Lavoro", color: "#2563eb", visible: true },
