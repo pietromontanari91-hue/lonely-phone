@@ -6,7 +6,6 @@ const clone = (obj) => JSON.parse(JSON.stringify(obj));
 let state = load();
 let logoClicks = [];
 let selectedEvent = null;
-
 function localIsoDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
