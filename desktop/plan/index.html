@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agenda — Plan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <header class="topbar">
+      <button class="brand" id="logoButton" type="button" aria-label="Logo Plan">
+        <span class="brand-mark">P</span><span><strong>Plan</strong><small>Agenda</small></span>
+      </button>
+      <nav class="nav-controls" aria-label="Navigazione calendario">
+        <button id="prevButton" type="button" aria-label="Periodo precedente">‹</button>
+        <button id="todayButton" type="button">Oggi</button>
+        <button id="nextButton" type="button" aria-label="Periodo successivo">›</button>
+      </nav>
+      <h1 id="periodTitle">Agosto 2026</h1>
+      <div class="view-switch" role="group" aria-label="Vista calendario">
+        <button id="monthViewButton" class="active" type="button">Mese</button>
+        <button id="weekViewButton" type="button">Settimana</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Barra laterale calendario">
+        <section class="mini-card">
+          <div class="mini-header"><button id="miniPrev" type="button" aria-label="Mese piccolo precedente">‹</button><strong id="miniTitle"></strong><button id="miniNext" type="button" aria-label="Mese piccolo successivo">›</button></div>
+          <div class="mini-weekdays"><span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span></div>
+          <div id="miniCalendar" class="mini-grid"></div>
+        </section>
+        <section class="category-card">
+          <h2>Calendari</h2>
+          <div id="categoryList" class="category-list"></div>
+        </section>
+      </aside>
+
+      <section class="calendar-panel" aria-live="polite">
+        <div id="calendarRoot"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="eventModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <button id="closeModal" class="icon-button" type="button" aria-label="Chiudi dettaglio">×</button>
+      <h2 id="modalTitle"></h2>
+      <dl id="modalDetails"></dl>
+      <label class="edit-affordance">Titolo <input id="quickTitle" type="text"></label>
+      <button id="saveQuickEdit" class="edit-affordance primary" type="button">Salva modifica</button>
+      <button id="deleteModalEvent" class="edit-affordance danger" type="button">Elimina evento</button>
+    </div>
+  </div>
+
+  <div id="directorPanel" class="director hidden" role="dialog" aria-modal="true" aria-labelledby="directorTitle">
+    <div class="director-card">
+      <button id="closeDirector" class="icon-button" type="button" aria-label="Chiudi pannello regia">×</button>
+      <h2 id="directorTitle">Pannello regia</h2>
+      <div class="director-grid">
+        <label>Mese visualizzato <input id="directorMonth" type="month"></label>
+        <label>Evento <select id="eventSelect"></select></label>
+        <label>Titolo <input id="eventTitle" type="text"></label>
+        <label class="timed-field">Inizio <input id="eventStart" type="datetime-local"></label>
+        <label class="timed-field">Fine <input id="eventEnd" type="datetime-local"></label>
+        <label class="all-day-field hidden">Inizio <input id="eventStartDate" type="date"></label>
+        <label class="all-day-field hidden">Fine <input id="eventEndDate" type="date"></label>
+        <label class="checkbox"><input id="eventAllDay" type="checkbox"> Tutto il giorno</label>
+        <label>Categoria <select id="eventCategory"></select></label>
+        <label class="wide">Note <textarea id="eventNotes" rows="3"></textarea></label>
+      </div>
+      <p id="eventFormError" class="form-error" role="status" aria-live="polite"></p>
+      <div class="director-actions">
+        <button id="newEvent" type="button">Aggiungi evento</button>
+        <button id="saveEvent" type="button">Salva evento</button>
+        <button id="deleteEvent" type="button">Elimina evento</button>
+        <button id="resetContent" type="button">Ripristina contenuti iniziali</button>
+        <button id="clearEvents" type="button">Svuota eventi</button>
+        <button id="cleanMode" type="button">Entra in modalità ripresa pulita</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
