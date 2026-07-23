@@ -12,9 +12,29 @@ function freshState(){
   const cloned = cloneData(initialData);
   return { currentUserId: cloned.currentUserId, runtimeMessageCounter: 0, chats: cloned.chats };
 }
+function reconcileWithInitialData(saved){
+  const next = saved && Array.isArray(saved.chats) ? saved : freshState();
+  next.currentUserId = initialData.currentUserId || next.currentUserId || "protagonista";
+  next.runtimeMessageCounter = next.runtimeMessageCounter || 0;
+  const savedChats = Array.isArray(next.chats) ? next.chats : [];
+  const reconciled = initialData.chats.map(seed => {
+    const existing = savedChats.find(chat => chat.id === seed.id);
+    const runtimeMessages = (existing?.messages || []).filter(message => message.runtime);
+    return { ...cloneData(seed), messages: [...cloneData(seed.messages || []), ...runtimeMessages] };
+  });
+  const runtimeChats = savedChats.filter(chat => chat.runtime && !initialData.chats.some(seed => seed.id === chat.id));
+  next.chats = [...reconciled, ...runtimeChats];
+  return next;
+}
 function loadState(){
   const stored = localStorage.getItem(STORAGE_KEY);
-  if(stored){try{return JSON.parse(stored)}catch(e){}}
+  if(stored){
+    try{
+      const reconciled = reconcileWithInitialData(JSON.parse(stored));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(reconciled));
+      return reconciled;
+    }catch(e){}
+  }
   const next = freshState();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   return next;
@@ -130,7 +150,7 @@ document.getElementById("createGroupBtn").onclick=()=>{const title=document.getE
 document.getElementById("incomingBtn").onclick=()=>{const chat=getSceneChat(); if(chat)addMessage(chat,"in","Stiamo già andando, tu dove sei?",chat.participants?.find(p=>p.id!==state.currentUserId)?.name||"",directorTimeValue())};
 document.getElementById("typingBtn").onclick=()=>{const chat=getSceneChat(); if(!chat)return; if(!current || current.id!==chat.id)openChat(chat.id); document.getElementById("directorPanel").classList.remove("open"); setTimeout(()=>{const t=appendText(messages,"div","sta scrivendo…","typing"); messages.scrollTop=messages.scrollHeight; setTimeout(()=>t.remove(),2500)},120)};
 document.getElementById("incomingAudioBtn").onclick=()=>{const chat=getSceneChat(); if(chat)addMessage(chat,"in","",chat.participants?.find(p=>p.id!==state.currentUserId)?.name||"",directorTimeValue(),true,"0:11")};
-document.getElementById("resetBtn").onclick=()=>{const chat=getSceneChat(); if(!chat)return; const seed=initialData.chats.find(item=>item.id===chat.id); if(seed){chat.messages=cloneData(seed.messages)}else{chat.messages=chat.messages.filter(message=>!message.runtime)} save(); if(current && current.id===chat.id)renderMessages(); renderList(document.getElementById("searchInput").value)};
+document.getElementById("resetBtn").onclick=()=>{const chat=getSceneChat(); if(!chat)return; const seed=initialData.chats.find(item=>item.id===chat.id); if(seed){const resetChat=cloneData(seed); Object.keys(chat).forEach(key=>delete chat[key]); Object.assign(chat, resetChat)}else{chat.messages=chat.messages.filter(message=>!message.runtime)} save(); if(current && current.id===chat.id){current=chat; openChat(chat.id)} renderList(document.getElementById("searchInput").value)};
 document.getElementById("deleteRuntimeBtn").onclick=()=>{const chat=getSceneChat(), sel=document.getElementById("runtimeMessageSelect"); if(!chat||!sel.value)return; chat.messages=chat.messages.filter(m=>m.id!==sel.value || !m.runtime); save(); if(current&&current.id===chat.id)renderMessages(); renderList(document.getElementById("searchInput").value)};
 function addFromPanel(side){const chat=chats.find(c=>c.id===document.getElementById("messageChat").value),text=document.getElementById("messageText").value.trim(),sender=document.getElementById("messageSender").value.trim(),time=directorTimeValue(); if(chat&&text)addMessage(chat,side,text,sender,time); document.getElementById("messageText").value="";}
 document.getElementById("addIncomingBtn").onclick=()=>addFromPanel("in"); document.getElementById("addOutgoingBtn").onclick=()=>addFromPanel("out");
