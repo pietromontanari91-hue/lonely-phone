@@ -14,7 +14,7 @@ export const interlineeEmail = {
   read: false,
   bodyHtml: `
     <figure class="newsletter-cover">
-      <img src="../../assets/images/interlinee-mag-agosto-2026.webp" alt="Copertina di Interlinee Magazine agosto 2026, Soli o quasi">
+      <img src="../../assets/images/covers.jpg" alt="Copertina di Interlinee Magazine agosto 2026, Soli o quasi">
     </figure>
     <p class="newsletter-deck">Il nuovo numero di Interlinee è in edicola.</p>
     <h2>Soli… o quasi?</h2>
