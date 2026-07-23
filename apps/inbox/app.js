@@ -1,10 +1,15 @@
 import { readJSON, writeJSON } from "../../core/storage.js";
-import { INBOX_STORAGE_KEY, interlineeEmail, removeUndeliveredInterlineeSeed, scheduleEmailDelivery } from "../../core/emailScheduler.js";
+import { INBOX_STORAGE_KEY, interlineeEmail as baseInterlineeEmail, removeUndeliveredInterlineeSeed, scheduleEmailDelivery } from "../../core/emailScheduler.js";
 import { INBOX_EMAILS_CHANGED_EVENT, startSchedulerRunner } from "../../core/schedulerRunner.js";
 import { INBOX_STARTER_EMAILS } from "./content.js";
 
 const $ = (id) => document.getElementById(id);
 const STORAGE_KEY = INBOX_STORAGE_KEY;
+const INTERLINEE_COVER_PATH = "../../assets/images/covers.jpg";
+const interlineeEmail = {
+  ...baseInterlineeEmail,
+  bodyHtml: baseInterlineeEmail.bodyHtml.replace(/<img src="[^"]+"/, `<img src="${INTERLINEE_COVER_PATH}"`)
+};
 let currentEmailId = null;
 
 const cloneData = (value) => JSON.parse(JSON.stringify(value));
