@@ -22,8 +22,7 @@ radial-gradient(circle at 95% 14%,#7c2d8f 0,transparent 35%),
 linear-gradient(180deg,#c60a79,#52063b);overflow:hidden}
 button,input,textarea,select{font:inherit;color:inherit}
 .glass{background:linear-gradient(135deg,var(--glass-a),var(--glass-b));border:1px solid var(--line);box-shadow:0 20px 55px rgba(49,0,30,.3),inset 0 1px 0 rgba(255,255,255,.28);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%)}
-.app{width:min(100%,520px);height:100dvh;max-width:520px;margin:auto;position:fixed;inset:0;overflow:hidden}
-.screen{position:absolute;inset:0;display:none;padding:calc(env(safe-area-inset-top) + 10px) 10px calc(env(safe-area-inset-bottom) + 10px)}
+.screen{position:absolute;inset:0;display:none;padding:calc(env(safe-area-inset-top) + 10px) 10px env(safe-area-inset-bottom)}
 .screen.active{display:flex;flex-direction:column}
 .top,.chathead{height:66px;border-radius:25px;display:flex;align-items:center;gap:10px;padding:0 12px;flex:0 0 auto}
 .brand{font-size:27px;font-weight:300;letter-spacing:3px;flex:1}
@@ -72,10 +71,9 @@ button,input,textarea,select{font:inherit;color:inherit}
 </style>
 <link rel="stylesheet" href="../../core/app-theme.css">
 <style>
-/* Texty standalone PWA viewport: override the shared app-shell position so the app fills the installed viewport. */
-.pandrero-texty .app{position:fixed;inset:0;width:min(100%,520px);height:100dvh;max-width:520px;margin:auto;overflow:hidden}
-.pandrero-texty .app > .screen{min-height:0}
-.pandrero-texty .app > #chatScreen.screen{position:absolute;inset:0;min-height:0}
+/* Texty standalone PWA viewport: anchor the app to the installed viewport edges. */
+.pandrero-texty .app{position:fixed;top:0;bottom:0;left:50%;width:min(100%,520px);max-width:520px;height:auto;margin:0;transform:translateX(-50%);overflow:hidden}
+.pandrero-texty .app > .screen{position:absolute;inset:0;min-height:0}
 .pandrero-texty #chatScreen > .chathead{flex:0 0 66px}
 .pandrero-texty #chatScreen > .messages{flex:1 1 auto;min-height:0;overflow-y:auto}
 .pandrero-texty #chatScreen > .composer{flex:0 0 auto}
